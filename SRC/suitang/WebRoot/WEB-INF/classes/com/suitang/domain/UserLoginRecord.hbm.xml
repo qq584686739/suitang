@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.suitang.domain.UserLoginRecord" table="user_login_record">
+		<id name="last_login_device_id" type="string" column="last_login_device_id">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="uid" type="int" column="uid"></property>
+		<property name="first_login_time" type="long" column="first_login_time"></property>
+		<property name="last_login_time" type="long" column="last_login_time"></property>
+		<property name="last_login_device" type="string" column="last_login_device"></property>
+	</class>
+</hibernate-mapping>
