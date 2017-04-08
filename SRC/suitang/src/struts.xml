@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 开发模式 -->
+	<constant name="struts.devMode" value="true"></constant>
+
+	<!--  ui主题，简单主题 -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+
+	<!-- 修改struts的后缀，改成.do -->
+	<constant name="struts.action.extension" value="action"></constant>
+	
+	<!-- 系统管理 -->
+	<package name="suitang" namespace="/suitang" extends="struts-default">
+		<!-- 测试 -->
+		<action name="user_*" class="userLocalAuthAction" method="{1}">
+			<result name="save">/success.jsp</result>
+		</action>
+		
+		<action name="login_*" class="userPasswordValidateAction" method="{1}">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+		
+		
+	</package>
+
+</struts>
+	
+	
+	
