@@ -5,14 +5,17 @@
 		String			user
 		String			password
 	------------------
-	成功返回数据
+	成功返回数据				//2017-4-8 19:24  返回的数据是一个【用户登录信息表[user_login_record]】信息表
 	{
 		status：""
 		meaasge:""
 		data:
 		{
-			id:13150227 -> md5
-			...
+			用户id			uid			int			用md5加密
+			首次登录时间		first_login_time	long
+			上次登录时间		last_login_time		long
+			上次登录设备		last_login_device	varchar
+			上次登录设备id		last_login_id		varchar
 		}
 	}
 	
