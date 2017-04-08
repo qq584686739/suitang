@@ -16,6 +16,8 @@ public class ValidateUtil {
 			
 			HttpResult httpResult = httpUtils.request();
 			jsonObject = JSONObject.fromObject(httpResult.getResponseBodyString("utf-8"));
+			
+			
 			return (String) jsonObject.get("status");
 		} catch (Exception e) {
 			return "error";

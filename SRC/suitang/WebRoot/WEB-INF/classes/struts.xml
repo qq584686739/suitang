@@ -22,9 +22,24 @@
 		</action>
 		
 		<action name="login_*" class="userPasswordValidateAction" method="{1}">
+			<!-- <result name="success" type="redirectAction">
+				<param name="actionName">
+					record_getSuccessInfo.action
+				</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">
+					record_getErrorInfo.action
+				</param>
+			</result> -->
+			<result name="success">/success.jsp</result>
+			<result name="error">/"error".jsp</result>
+		</action>
+		
+		<!-- <action name="record_*" class="userLoginRecordAction" method="{1}">
 			<result name="success">/success.jsp</result>
 			<result name="error">/error.jsp</result>
-		</action>
+		</action> -->
 		
 		
 	</package>

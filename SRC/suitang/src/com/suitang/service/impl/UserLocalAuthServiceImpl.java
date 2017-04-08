@@ -10,21 +10,15 @@ import com.suitang.domain.User_Local_Auths;
 import com.suitang.service.UserLocalAuthService;
 
 @Service(value="userLocalAuthService")
-public class UserLocalAuthServiceImpl implements UserLocalAuthService,ModelDriven<User_Local_Auths>{
+public class UserLocalAuthServiceImpl implements UserLocalAuthService{
 	@Resource
 	private UserLocalAuthDao userLocalAuthDao;
-	
-	private User_Local_Auths user_Local_Auths;
 	
 	@Override
 	public void saveUserLocalAuthS(User_Local_Auths user_Local_Auths) {
 		userLocalAuthDao.save(user_Local_Auths);
 	}
 
-	@Override
-	public User_Local_Auths getModel() {
-		return user_Local_Auths;
-	}
 
 	@Override
 	public void updateUserLocalAuthS(User_Local_Auths user_Local_Auths) {

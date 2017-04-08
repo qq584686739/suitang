@@ -1,14 +1,15 @@
 package com.suitang.dao.impl;
 
+import java.io.Serializable;
+
 import javax.annotation.Resource;
 
-import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.suitang.dao.BaseDao;
+import com.suitang.domain.User;
 
 @Transactional(readOnly=false)
 public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{			
@@ -17,7 +18,6 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 	@Resource(name="sessionFactory")
 	public void setDi(SessionFactory sessionFactory){
 		this.setSessionFactory(sessionFactory);
-		System.out.println("this.getHibernateTemplate() = " + this.getHibernateTemplate());
 	}
 
 	@Override
@@ -28,5 +28,10 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 	@Override
 	public void update(T entity) {
 		this.getHibernateTemplate().update(entity);
+	}
+
+	@Override
+	public User getUserById(Serializable uid) throws Exception{
+		return this.getHibernateTemplate().get(User.class,uid);
 	}
 }
