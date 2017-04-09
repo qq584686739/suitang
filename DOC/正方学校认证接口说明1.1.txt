@@ -7,22 +7,20 @@
 	------------------
 	成功返回数据				//2017-4-8 19:24  返回的数据是一个【用户登录信息表[user]】信息表
 	{
-		"status"：""
+		"status"："sucess"
 		"meaasge":""
 		"data":
 		{
-			>用户表[user]
-				用户id 		uid		int(自增)(主键)		md5加密（暂时未加密）
+				认证id 		authId				学号md5加密
 				昵称 		nickname	varchar			默认为学号
 				头像		avatar		varchar			默认为某一个头像（暂未设置）
 				性别		sex		int			默认为0男性
-				职位		rank		int			默认为0学生
 		}
 	}
 	验证失败返回的数据(json格式)
 	{
-		"status":"200"
-		"message":"错误的学号或密码"
+		"status":"fail"
+		"message":"具体的异常"  比如请求教务处失败 返回服务器异常   教务处返回 status fail  那就是用户名密码错误
 		"date":{}
 	}
 
