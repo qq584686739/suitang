@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import com.suitang.domain.User;
 import com.suitang.domain.UserPassword;
 import com.suitang.service.UserService;
+import com.suitang.utils.MD5Util;
 import com.suitang.utils.ValidateUtil;
 
 @SuppressWarnings("serial")
@@ -28,27 +29,19 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 	/**获得模型驱动*/
 	private UserPassword userPassword = this.getModel();
 	
-	@Resource
-	private UserService userService;
-	
 	/**正确或错误标识*/
 	private String validateString = "error";
 	
 	/**返回的json格式数据*/
 	JSONObject jsonObject = new JSONObject();
 	
+	/**学校验证返回的json格式数据*/
+	JSONObject jsonObjectInfo = null;
+	
 	private PrintWriter out = null;
-	/**初始化数据*/
-	public UserPasswordValidateAction(){
-		
-		jsonObject.put("status", 200);
-		jsonObject.put("message", "错误的用户名或密码");
-		jsonObject.put("date", "");
-	}
 	
 	/**验证方法*/
 	public void openAuth(){
-		
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
@@ -57,34 +50,26 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 			e.printStackTrace();
 		}
 		
-		System.out.println("这里");
-		
-		if(validateString.equals("success")){		//验证通过
-			jsonObject.put("status", 302);
-			jsonObject.put("message", "正确的用户名或密码");
+		if(((String)jsonObjectInfo.get("status")).equals("success")){		//验证通过
+			jsonObject.put("status", "success");
+			jsonObject.put("message", "");
 			
-			//获取user信息封装成json数据
-			User user = userService.getUserById(userPassword.getUser());
+			JSONObject jsonObjectTemp = new JSONObject();
 			
-			if(user==null){
-				user = new User();
-				/**********这里需要md5***************/
-				user.setUid((int)Integer.parseInt(userPassword.getUser()));	//暂时以为学号为uid
-				user.setNickname(userPassword.getUser());					//以学号为默认的昵称
-				user.setAvatar("暂时为空");									//头像路径	，暂时设置为null吧
-				user.setSex(0);												//性别：默认为男		0：男		1：女
-				user.setRank(0);											//职位：默认为学生	0：学生		1：女
 			
-				/**因为不存在，所以定义一个临时的，然后再把这个临时的存入数据库*/
-				userService.saveUser(user);
-			}
-			JSONObject jsonObjectTemp = JSONObject.fromObject(user);
+			jsonObjectTemp.put("authId", MD5Util.md5(userPassword.getUser()));	//认证id	md5加密
+			jsonObjectTemp.put("nickname", userPassword.getUser());				//昵称，默认学号
+			jsonObjectTemp.put("avatar", "");									//头像,暂时为空
+			jsonObjectTemp.put("sex", 0);										//性别
 			
-			jsonObject.put("date", jsonObjectTemp);
+			jsonObject.put("data", jsonObjectTemp);
 			
 			out.write(jsonObject.toString());
 //			out.append(jsonObject.toString());
-		}else{										//验证没通过
+		}else{										//验证没通过error
+			jsonObject.put("status", "error");
+			jsonObject.put("message", (String)jsonObjectInfo.get("message"));
+			jsonObject.put("data", "");
 			
 			out.write(jsonObject.toString());
 		}
@@ -100,13 +85,8 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 		requestProperty.put("yhm", userPassword.getUser());
 		requestProperty.put("mm", userPassword.getPassword());
 		
-		String result = ValidateUtil.validate(requestUrl, null, requestProperty);
-		
-		if(result.equals("success")){
-			validateString = "success";
-		}else {
-			validateString = "error";
-		}
+		/**得到验证信息*/
+		jsonObjectInfo = ValidateUtil.validate(requestUrl, null, requestProperty);
 		
 		super.validate();
 	}

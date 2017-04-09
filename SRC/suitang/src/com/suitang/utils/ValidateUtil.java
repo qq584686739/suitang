@@ -9,7 +9,7 @@ import com.suitang.utils.HttpUtils.HttpResult;
 
 
 public class ValidateUtil {
-	public static String validate(String requestUrl, Map<String, String> headProperty, Map<String, String> requestProperty){
+	public static JSONObject validate(String requestUrl, Map<String, String> headProperty, Map<String, String> requestProperty){
 		JSONObject jsonObject = null;
 		try {
 			HttpUtils httpUtils = new HttpUtils(requestUrl,headProperty, requestProperty);
@@ -18,9 +18,9 @@ public class ValidateUtil {
 			jsonObject = JSONObject.fromObject(httpResult.getResponseBodyString("utf-8"));
 			
 			
-			return (String) jsonObject.get("status");
+			return jsonObject;
 		} catch (Exception e) {
-			return "error";
+			return jsonObject;
 		}
 	}
 }
