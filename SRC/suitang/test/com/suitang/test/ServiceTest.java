@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.suitang.dao.UserOtherAuthsDao;
 import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
+import com.suitang.domain.UserOtherAuths;
 import com.suitang.domain.User_Local_Auths;
 import com.suitang.service.UserLocalAuthService;
 import com.suitang.service.UserLoginRecordService;
@@ -78,6 +80,23 @@ public class ServiceTest {
 		UserService userService = (UserService) context.getBean("userService");
 		
 		User user = userService.getUserById(1);
+	
+	}
+	
+	
+	@Test
+	public void testUserOtherAuths_save(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserOtherAuthsDao userOtherAuthsDao = (UserOtherAuthsDao) context.getBean("userOtherAuthsDao");
+		
+		UserOtherAuths userOtherAuths = new UserOtherAuths();
+//		userOtherAuths.setUid(3);
+		userOtherAuths.setIdentity_type("asdsasa");
+		userOtherAuths.setIdentifier("aaaaaa");
+		userOtherAuths.setToken("tttttttttt");
+		userOtherAuths.setInvalid_time((long)123789);
+		
+		userOtherAuthsDao.save(userOtherAuths);
 	
 	}
 }

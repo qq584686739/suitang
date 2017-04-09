@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.suitang.domain.UserOtherAuths" table="user_other_auths">
+		<composite-id>
+            <key-property name="identity_type" type="string" column="identity_type" />
+            <key-property name="identifier" type="string" column="identifier" />
+        </composite-id>
+        
+		<property name="uid" type="int" column="uid"></property>
+<!-- 		<property name="identity_type" type="string" column="identity_type"></property>
+		<property name="identifier" type="string" column="identifier"></property> -->
+		<property name="token" type="string" column="token"></property>
+		<property name="invalid_time" type="long" column="invalid_time"></property>
+	</class>
+</hibernate-mapping>

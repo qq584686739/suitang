@@ -7,9 +7,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.suitang.dao.UserDao;
 import com.suitang.dao.UserLocalAuthDao;
 import com.suitang.dao.UserLoginRecordDao;
+import com.suitang.dao.UserOtherAuthsDao;
 import com.suitang.dao.impl.UserLocalAuthDaoImpl;
 import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
+import com.suitang.domain.UserOtherAuths;
 import com.suitang.domain.User_Local_Auths;
 
 public class DaoTest {
@@ -64,8 +66,8 @@ public class DaoTest {
 		UserDao userDao = (UserDao) context.getBean("userDao");
 		
 		User user = new User();
-		user.setUid(11);
-		user.setNickname("nicheng");
+//		user.setUid(2);
+		user.setNickname("这是我的昵称");
 		user.setAvatar("touxiang1111111111");
 		user.setSex(0);
 		user.setRank(0);
@@ -82,6 +84,29 @@ public class DaoTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testUserOtherAuths_save(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserOtherAuthsDao userOtherAuthsDao = (UserOtherAuthsDao) context.getBean("userOtherAuthsDao");
 		
+		UserOtherAuths userOtherAuths = new UserOtherAuths();
+		userOtherAuths.setUid(6);
+		userOtherAuths.setIdentity_type("111111");
+		userOtherAuths.setIdentifier("222222");
+		userOtherAuths.setToken("我是tokensad萨达");
+		userOtherAuths.setInvalid_time((long)123789);
+		
+		userOtherAuthsDao.save(userOtherAuths);
+	}
+	@Test
+	public void testUserOtherAuths_getById(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserOtherAuthsDao userOtherAuthsDao = (UserOtherAuthsDao) context.getBean("userOtherAuthsDao");
+		
+		User user = userOtherAuthsDao.getUserByIdentity_typeAndIdentifier(
+				"222", "111");
+		System.out.println(user.getUid());
 	}
 }

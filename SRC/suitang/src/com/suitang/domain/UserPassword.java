@@ -1,6 +1,8 @@
 package com.suitang.domain;
 
-public class UserPassword {
+import java.io.Serializable;
+
+public class UserPassword implements Serializable{
 	private String user;
 	private String password;
 

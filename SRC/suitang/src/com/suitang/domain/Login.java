@@ -1,13 +1,15 @@
 package com.suitang.domain;
 
-public class Login {
-	private String identity_type;
-	private String identifier;
-	private String nickName;
-	private int sex;
-	private String avatar;
-	private String last_login_device;
-	private String last_login_device_id;
+import java.io.Serializable;
+
+public class Login implements Serializable{
+	private String identity_type;			//认证类型
+	private String identifier;				//认证id
+	private String nickName;				//昵称
+	private int sex;						//性别
+	private String avatar;					//头像
+	private String last_login_device;		//本次登录设备
+	private String last_login_device_id;	//本次登录设备id
 
 	public String getIdentity_type() {
 		return identity_type;

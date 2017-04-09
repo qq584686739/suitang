@@ -1,6 +1,8 @@
 package com.suitang.domain;
 
-public class UserOtherAuths {
+import java.io.Serializable;
+
+public class UserOtherAuths implements Serializable{
 	private int uid;
 	private String identity_type;
 	private String identifier;

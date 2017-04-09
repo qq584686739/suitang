@@ -10,10 +10,21 @@
 	<property name="hibernate.connection.driver_class">
 		com.mysql.jdbc.Driver
 	</property>
-	<property name="hibernate.connection.url">
+	<!-- <property name="hibernate.connection.url">
 		jdbc:mysql://139.129.11.18:3306/suitang?useUnicode=true&amp;chararcterEncoding=utf8
+		</property> -->
+
+	<!-- <property name="hibernate.connection.url">
+		<![CDATA[
+		jdbc:mysql://139.129.11.18:3306/suitang?useUnicode=true&chararcterEncoding=utf8
+		]]>
+		</property> -->
+
+	<!-- binary -->
+	<!-- latin1 -->
+	<property name="hibernate.connection.url">
+		jdbc:mysql://139.129.11.18:3306/suitang?useUnicode=true&amp;characterEncoding=utf8
 	</property>
-	<!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/suitang?useUnicode=true&amp;chararcterEncoding=utf8</property> -->
 	<property name="hibernate.connection.username">suitang</property>
 	<property name="hibernate.connection.password">
 		suitang123456
@@ -21,7 +32,7 @@
 
 	<!-- 设置事务自动提交 -->
 	<property name="hibernate.connection.autocommit">true</property>
-	
+
 
 	<!-- 其他配置 -->
 	<property name="hibernate.dialect">
@@ -34,6 +45,7 @@
 	<mapping resource="com/suitang/domain/User_Local_Auths.hbm.xml" />
 	<mapping resource="com/suitang/domain/UserLoginRecord.hbm.xml" />
 	<mapping resource="com/suitang/domain/User.hbm.xml" />
+	<mapping resource="com/suitang/domain/UserOtherAuths.hbm.xml" />
 
 
 </session-factory>

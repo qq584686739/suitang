@@ -1,6 +1,8 @@
 package com.suitang.domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 	private int uid; // 用户ID
 	private String nickname; // 用户昵称
 	private String avatar; // 用户头像

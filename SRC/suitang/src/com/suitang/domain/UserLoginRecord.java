@@ -1,6 +1,8 @@
 package com.suitang.domain;
 
-public class UserLoginRecord {
+import java.io.Serializable;
+
+public class UserLoginRecord implements Serializable{
 	private Integer uid; //
 	private long first_login_time; // 首次登录时间
 	private long last_login_time; // 上次登录时间

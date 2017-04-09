@@ -22,7 +22,7 @@ public class UserAction extends BaseAction<User>{
 	public String save(){
 		
 		User user = new User();
-		user.setUid(22);
+//		user.setUid(1);
 		user.setNickname("这是我的昵称");
 		user.setAvatar("这是我的头像地址");
 		user.setSex(0);

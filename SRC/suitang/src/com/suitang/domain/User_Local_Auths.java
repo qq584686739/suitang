@@ -1,6 +1,8 @@
 package com.suitang.domain;
 
-public class User_Local_Auths {
+import java.io.Serializable;
+
+public class User_Local_Auths implements Serializable{
 	private int uid;
 	private String password;
 	private String phone_no;
