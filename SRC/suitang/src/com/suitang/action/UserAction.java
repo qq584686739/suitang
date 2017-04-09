@@ -1,14 +1,11 @@
 package com.suitang.action;
 
 import javax.annotation.Resource;
-import javax.ws.rs.GET;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.suitang.domain.User;
-import com.suitang.domain.User_Local_Auths;
-import com.suitang.service.UserLocalAuthService;
 import com.suitang.service.UserService;
 
 @SuppressWarnings("serial")
@@ -23,6 +20,13 @@ public class UserAction extends BaseAction<User>{
 	
 	/**执行保存*/
 	public String save(){
+		
+		User user = new User();
+		user.setUid(22);
+		user.setNickname("这是我的昵称");
+		user.setAvatar("这是我的头像地址");
+		user.setSex(0);
+		user.setRank(0);
 		
 		userService.saveUser(user);
 		return "save";

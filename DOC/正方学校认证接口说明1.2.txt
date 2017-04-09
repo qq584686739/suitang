@@ -41,14 +41,14 @@
 >登录
 	1、本地登录  (暂不实现)
 	2、三方登录
-		参数: 	authType zf qq weixin
-				authId 	
-				nickName
-				sex
-				avatar  >>> user
+		参数: 		identity_type		zf qq weixin		认证类型	[user_other_auths]
+				identifier					认证id		[user_other_auths]
+				nickName					昵称
+				sex						性别
+				avatar  >>> user				头像
 				、、、、、、、、、、、、、、
-				deviceName
-				deviceId >>>user_login_record
+				last_login_device					本次登录设备	[user_login_record]
+				last_login_device_id >>>user_login_record		本次登录设备id	[user_login_record]
 		返回:
 			user信息
 			

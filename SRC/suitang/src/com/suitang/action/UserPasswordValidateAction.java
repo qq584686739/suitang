@@ -18,6 +18,8 @@ import com.suitang.service.UserService;
 import com.suitang.utils.MD5Util;
 import com.suitang.utils.ValidateUtil;
 
+import freemarker.core.ReturnInstruction.Return;
+
 @SuppressWarnings("serial")
 @Controller("userPasswordValidateAction")
 @Scope(value="prototype")//如果交给spring管理，scope = "prototype"
@@ -50,12 +52,23 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 			e.printStackTrace();
 		}
 		
+		if(jsonObjectInfo == null){
+			//说明服务器异常,初始化数据
+			jsonObjectInfo = new JSONObject();
+			jsonObjectInfo.put("status", "error");
+			jsonObjectInfo.put("message", "服务器异常,请联系管理员！");
+			jsonObjectInfo.put("data", "");
+			
+			out.write(jsonObjectInfo.toString());
+			return ;
+		}
+		
+		
 		if(((String)jsonObjectInfo.get("status")).equals("success")){		//验证通过
-			jsonObject.put("status", "success");
-			jsonObject.put("message", "");
+			jsonObject.put("status", "success");//覆盖初始化数据
+			jsonObject.put("message", "");		//覆盖初始化数据
 			
 			JSONObject jsonObjectTemp = new JSONObject();
-			
 			
 			jsonObjectTemp.put("authId", MD5Util.md5(userPassword.getUser()));	//认证id	md5加密
 			jsonObjectTemp.put("nickname", userPassword.getUser());				//昵称，默认学号
@@ -63,16 +76,12 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 			jsonObjectTemp.put("sex", 0);										//性别
 			
 			jsonObject.put("data", jsonObjectTemp);
-			
-			out.write(jsonObject.toString());
-//			out.append(jsonObject.toString());
 		}else{										//验证没通过error
 			jsonObject.put("status", "error");
-			jsonObject.put("message", (String)jsonObjectInfo.get("message"));
+			jsonObject.put("message", (String)jsonObjectInfo.get("message"));		//覆盖初始化数据
 			jsonObject.put("data", "");
-			
-			out.write(jsonObject.toString());
 		}
+		out.write(jsonObject.toString());
 		
 //		return validateString;
 	}

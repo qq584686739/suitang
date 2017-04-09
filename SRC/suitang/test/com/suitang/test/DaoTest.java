@@ -21,7 +21,7 @@ public class DaoTest {
 		User_Local_Auths user = new User_Local_Auths();
 //		user.setUid(10);
 		user.setPhone_no("123456789");
-		user.setEmail("584686739@qq.com");
+		user.setEmail("肖家豪584686739@qq.com");
 		user.setPassword("123456");
 		
 		userLocalAuthDao.save(user);

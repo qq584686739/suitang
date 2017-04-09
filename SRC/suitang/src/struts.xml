@@ -15,25 +15,15 @@
 	<constant name="struts.action.extension" value="action"></constant>
 	
 	<!-- 系统管理 -->
-	<package name="suitang" namespace="/suitang" extends="struts-default">
+	<package name="suitang" namespace="" extends="struts-default">
 		<!-- 测试 -->
 		<action name="user_*" class="userLocalAuthAction" method="{1}">
 			<result name="save">/success.jsp</result>
 		</action>
 		
 		<action name="login_*" class="userPasswordValidateAction" method="{1}">
-			<!-- <result name="success" type="redirectAction">
-				<param name="actionName">
-					record_getSuccessInfo.action
-				</param>
-			</result>
-			<result name="error" type="redirectAction">
-				<param name="actionName">
-					record_getErrorInfo.action
-				</param>
-			</result> -->
-			<result name="success">/success.jsp</result>
-			<result name="error">/"error".jsp</result>
+			<!-- <result name="success">/success.jsp</result>
+			<result name="error">/"error".jsp</result> -->
 		</action>
 		
 		<!-- <action name="record_*" class="userLoginRecordAction" method="{1}">

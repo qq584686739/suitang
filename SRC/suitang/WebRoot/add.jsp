@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   	<form action="${pageContext.request.contextPath }/suitang/user_save.action" method="post">
+   	<form action="${pageContext.request.contextPath }/user_save.action" method="post">
 		手机：<input type="text" name="phone_no" /> <br/>
 		密码：<input type="password" name="password" /><br />
 		邮箱：<input type="text" name="email" /><br />
