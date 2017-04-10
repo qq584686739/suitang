@@ -1,5 +1,6 @@
 package com.suitang.dao.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -23,14 +24,24 @@ public class UserOtherAuthsDaoImpl extends BaseDaoImpl<UserOtherAuths> implement
 				this.getHibernateTemplate().getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
+//		select * FROM user u WHERE u.uid IN ( 
+//				SELECT uos.uid 
+//				FROM 
+//				user_other_auths uos 
+//				WHERE 
+//				uos.identity_type = 'qq1234' AND 
+//				uos.identifier = '141024' );
+		
+		
 		String hql = "FROM User u WHERE u.uid IN ( "
 				+ "SELECT uos.uid "
 				+ "FROM "
 				+ "UserOtherAuths uos "
 				+ "WHERE "
-				+ "uos.identity_type = "+ identity_type +" AND "
-				+ "uos.identifier = " + identifier + " )";
+				+ "uos.identity_type = '"+ identity_type +"' AND "
+				+ "uos.identifier = '" + identifier + "' )";
 		Query query = session.createQuery(hql);
+		System.out.println(query);
 		List<User> list = query.list();
 		
 		if(list!=null && list.size()>0){

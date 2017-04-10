@@ -11,6 +11,7 @@ import com.suitang.domain.UserOtherAuths;
 import com.suitang.domain.User_Local_Auths;
 import com.suitang.service.UserLocalAuthService;
 import com.suitang.service.UserLoginRecordService;
+import com.suitang.service.UserOtherAuthsService;
 import com.suitang.service.UserService;
 import com.suitang.service.impl.UserLocalAuthServiceImpl;
 
@@ -98,5 +99,31 @@ public class ServiceTest {
 		
 		userOtherAuthsDao.save(userOtherAuths);
 	
+	}
+	
+	@Test
+	public void testUserLoginRecordService_get(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserLoginRecordService userLoginRecordService = 
+				(UserLoginRecordService) context.getBean("userLoginRecordService");
+		
+		UserLoginRecord userLoginRecord = 
+				userLoginRecordService.getUserLoginRecordByLast_login_device_id("222");
+	}
+	
+	@Test
+	public void testUserLoginRecordService_getUserOtherAuths(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserLoginRecordService userLoginRecordService = 
+				(UserLoginRecordService) context.getBean("userLoginRecordService");
+		UserOtherAuths userOtherAuths = 
+				userLoginRecordService.getUserOtherAuthsByLast_login_device_id("333");
+	}
+	@Test
+	public void getUserByIdentity_typeAndIdentifier(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserOtherAuthsService userOtherAuthsService = 
+				(UserOtherAuthsService) context.getBean("userOtherAuthsService");
+		User user = userOtherAuthsService.getUserByIdentity_typeAndIdentifier("qq1234", "141024");
 	}
 }

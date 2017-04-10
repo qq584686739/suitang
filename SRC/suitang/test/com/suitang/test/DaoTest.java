@@ -13,6 +13,7 @@ import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
 import com.suitang.domain.UserOtherAuths;
 import com.suitang.domain.User_Local_Auths;
+import com.suitang.service.UserLoginRecordService;
 
 public class DaoTest {
 	@Test
@@ -49,15 +50,13 @@ public class DaoTest {
 		UserLoginRecordDao userLoginRecordDao = (UserLoginRecordDao) context.getBean("userLocalRecordDao");
 		
 		UserLoginRecord userLoginRecord = new UserLoginRecord();
-		userLoginRecord.setUid(1);
+		userLoginRecord.setUid(2);
 		userLoginRecord.setFirst_login_time(1111);
 		userLoginRecord.setLast_login_time(2222);
 		userLoginRecord.setLast_login_device("asdfffffff");
-		userLoginRecord.setLast_login_device_id("123456789789");
-		
+		userLoginRecord.setLast_login_device_id("222");
 		
 		userLoginRecordDao.save(userLoginRecord);
-		
 	}
 	
 	@Test
@@ -108,5 +107,29 @@ public class DaoTest {
 		User user = userOtherAuthsDao.getUserByIdentity_typeAndIdentifier(
 				"222", "111");
 		System.out.println(user.getUid());
+	}
+	
+	@Test
+	public void testUserLoginRecord_get(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserLoginRecordDao userLoginRecordDao = (UserLoginRecordDao) context.getBean("userLoginRecordDao");
+		
+		UserLoginRecord userLoginRecord = userLoginRecordDao.getUserLoginRecordByLast_login_device_id("222");
+	}
+	
+	@Test
+	public void testUserLoginRecord_getUserOtherAuths(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserLoginRecordDao userLoginRecordDao = (UserLoginRecordDao) context.getBean("userLoginRecordDao");
+		
+		UserOtherAuths userOtherAuths = 
+				userLoginRecordDao.getUserOtherAuthsByLast_login_device_id("333");
+	}
+	@Test
+	public void testUserLoginRecord_getUserOtherAuthsByLast_login_device_id(){
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		UserLoginRecordDao userLoginRecordDao = (UserLoginRecordDao) context.getBean("userLoginRecordDao");
+		
+		userLoginRecordDao.getUserOtherAuthsByLast_login_device_id("");
 	}
 }

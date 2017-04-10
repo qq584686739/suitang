@@ -6,7 +6,7 @@
 <hibernate-mapping>
 	<class name="com.suitang.domain.User_Local_Auths" table="user_local_auths">
 		<id name="uid" type="int" column="uid">
-			<generator class="increment"></generator>
+			<generator class="assigned"></generator>
 		</id>
 		<property name="password" type="string" column="password"></property>
 		<property name="phone_no" type="string" column="phone_no"></property>

@@ -9,11 +9,20 @@
             <key-property name="identity_type" type="string" column="identity_type" />
             <key-property name="identifier" type="string" column="identifier" />
         </composite-id>
+
+	<!-- <composite-id name="primaryKey" class="com.suitang.domain.PrimaryKey">PrimaryKey为我们自定义的主键类
+		<key-property name="identity_type" column="identity_type" type="string"></key-property>name及cardID为PrimaryKey类中的属性
+		<key-property name="identifier" column="identifier" type="string"></key-property>
+	</composite-id>   -->
+        
         
 		<property name="uid" type="int" column="uid"></property>
-<!-- 		<property name="identity_type" type="string" column="identity_type"></property>
-		<property name="identifier" type="string" column="identifier"></property> -->
 		<property name="token" type="string" column="token"></property>
 		<property name="invalid_time" type="long" column="invalid_time"></property>
+
+
+<!-- 		<property name="identity_type" type="string" column="identity_type"></property>
+		<property name="identifier" type="string" column="identifier"></property> -->
+
 	</class>
 </hibernate-mapping>

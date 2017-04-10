@@ -30,8 +30,7 @@ public class UserOtherAuthsServiceImpl implements UserOtherAuthsService{
 	@Override
 	public User getUserByIdentity_typeAndIdentifier(String identity_type,
 			String identifier) {
-		userOtherAuthsDao.getUserByIdentity_typeAndIdentifier(
+		return userOtherAuthsDao.getUserByIdentity_typeAndIdentifier(
 				identity_type, identifier);
-		return null;
 	}
 }

@@ -1,5 +1,5 @@
->认证接口：http://127.0.0.1:8080/suitang/login_openAuth.action
-	请求方式：GET
+>认证接口：http://139.129.11.18:8090/suitang/login_openAuth.action
+	请求方式：POST
 	需要的参数：	
 		参数类型		参数名		
 		String			user
@@ -11,10 +11,10 @@
 		"meaasge":""
 		"data":
 		{
-				认证id 		authId				学号md5加密
-				昵称 		nickname	varchar			默认为学号
-				头像		avatar		varchar			默认为某一个头像（暂未设置）
-				性别		sex		int			默认为0男性
+			认证id 		authId					学号md5加密
+			昵称 		nickname	varchar			默认为学号
+			头像		avatar		varchar			默认为某一个头像（暂未设置）
+			性别		sex		int			默认为0男性
 		}
 	}
 	验证失败返回的数据(json格式)
@@ -39,23 +39,38 @@
 	
 	
 >登录
+接口：http://139.129.11.18:8090/suitang/userLogin_login.action
 	1、本地登录  (暂不实现)
 	2、三方登录
-		参数: 		identity_type		zf qq weixin		认证类型	[user_other_auths]
-				identifier					认证id		[user_other_auths]
-				nickName					昵称
-				sex						性别
-				avatar  >>> user				头像
-				、、、、、、、、、、、、、、
-				last_login_device					本次登录设备	[user_login_record]
-				last_login_device_id >>>user_login_record		本次登录设备id	[user_login_record]
+		参数: 	identity_type		zf qq weixin		认证类型	[user_other_auths]
+			identifier					认证id		[user_other_auths]
+			nickName					昵称
+			sex						性别
+			avatar  >>> user				头像		[user]
+			、、、、、、、、、、、、、、
+			last_login_device				本次登录设备	[user_login_record]
+			last_login_device_id >>>user_login_record	本次登录设备id	[user_login_record]
 		返回:
 			user信息
 			
 		要求:
 		用户是否授权 是 >>> 更新用户信息
 		
-		每一次登录，都需要检查一下  >  90分钟							
+		每一次登录，都需要检查一下  >  90分钟		
+
+
+
+
+		xjh:
+		返回结果：
+			如果没授权（数据库不存在该用户信息）
+				则根据last_login_device_id查找[user_login_record]此表是否存在设备id，如果存在设备id，则校验该设备此次登录距上次登录是否满足90分钟，>=90分钟，则该新用户合法，创建该新用户，返回user。
+																			<90，则视为替别人（新用户）签到，返回error，message为不允许在90分钟之内该设备登录两个用户
+													不存在设备id，则该设备第一次使用，直接创建用户信息，并返回相应的user。
+			如果授权（存在该用户信息）
+				则根据last_login_device_id查找[user_login_record]此表是否存在设备id，如果存在设备id，则校验该设备此次登录距上次登录是否满足90分钟，>=90分钟，则该用户登录合法，返回user。
+																			<90, 则视为替别人签到，返回error，message为不允许在90分钟之内该设备登录两个用户
+													不存在设备id，则视为新设备登录老用户，直接更新用户信息，返回相应的user。
 
 随便改一次，提交一下
 		

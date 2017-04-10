@@ -47,6 +47,7 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
+			response.setContentType("text/html;charset=utf-8");
 			out = response.getWriter();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,7 +63,6 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 			out.write(jsonObjectInfo.toString());
 			return ;
 		}
-		
 		
 		if(((String)jsonObjectInfo.get("status")).equals("success")){		//验证通过
 			jsonObject.put("status", "success");//覆盖初始化数据
