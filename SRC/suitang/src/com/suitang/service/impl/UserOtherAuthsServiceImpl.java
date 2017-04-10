@@ -27,6 +27,9 @@ public class UserOtherAuthsServiceImpl implements UserOtherAuthsService{
 		userOtherAuthsDao.update(userOtherAuths);
 	}
 
+	/**
+	 * 根据前台传来的认证类型和认证id去得到uid，再根据uid得到user
+	 */
 	@Override
 	public User getUserByIdentity_typeAndIdentifier(String identity_type,
 			String identifier) {

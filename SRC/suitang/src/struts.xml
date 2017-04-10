@@ -33,6 +33,7 @@
 		
 		<action name="userLogin_*" class="com.suitang.action.LoginAction" method="{1}">
 			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
 		</action>
 		
 		

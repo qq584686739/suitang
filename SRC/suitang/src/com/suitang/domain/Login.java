@@ -2,14 +2,14 @@ package com.suitang.domain;
 
 import java.io.Serializable;
 
-public class Login implements Serializable{
-	private String identity_type;			//认证类型
-	private String identifier;				//认证id
-	private String nickName;				//昵称
-	private int sex;						//性别
-	private String avatar;					//头像
-	private String last_login_device;		//本次登录设备
-	private String last_login_device_id;	//本次登录设备id
+public class Login implements Serializable {
+	private String identity_type; // 认证类型
+	private String identifier; // 认证id
+	private String nickname; // 昵称
+	private int sex; // 性别
+	private String avatar; // 头像
+	private String device_name; // 本次登录设备
+	private String device_id; // 本次登录设备id
 
 	public String getIdentity_type() {
 		return identity_type;
@@ -27,12 +27,12 @@ public class Login implements Serializable{
 		this.identifier = identifier;
 	}
 
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public int getSex() {
@@ -51,20 +51,20 @@ public class Login implements Serializable{
 		this.avatar = avatar;
 	}
 
-	public String getLast_login_device() {
-		return last_login_device;
+	public String getDevice_name() {
+		return device_name;
 	}
 
-	public void setLast_login_device(String last_login_device) {
-		this.last_login_device = last_login_device;
+	public void setDevice_name(String device_name) {
+		this.device_name = device_name;
 	}
 
-	public String getLast_login_device_id() {
-		return last_login_device_id;
+	public String getDevice_id() {
+		return device_id;
 	}
 
-	public void setLast_login_device_id(String last_login_device_id) {
-		this.last_login_device_id = last_login_device_id;
+	public void setDevice_id(String device_id) {
+		this.device_id = device_id;
 	}
 
 }

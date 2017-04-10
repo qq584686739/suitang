@@ -25,11 +25,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	
 		认证类型：<input type="text" name="identity_type" /> <br/>
 		认证id：<input type="text" name="identifier" /> <br/>
-		昵称：<input type="text" name="nickName" /> <br/>
+		昵称：<input type="text" name="nickname" /> <br/>
 		性别：<input type="text" name="sex" /> <br/>
 		头像	：<input type="text" name="avatar" /> <br/>
-		本次登录设备：<input type="text" name="last_login_device" /> <br/>
-		本次登录设备id：<input type="text" name="last_login_device_id" /> <br/>
+		本次登录设备：<input type="text" name="device_name" /> <br/>
+		本次登录设备id：<input type="text" name="device_id" /> <br/>
 		<input type="submit" value="登录"/>
    	</form>
   </body>

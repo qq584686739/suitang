@@ -50,7 +50,7 @@ public class LoginAction extends BaseAction<Login>{
 	/**登录返回的json格式数据*/
 	JSONObject jsonObjectLoginInfo = new JSONObject();
 	
-	public String login(){
+	public void login(){
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
@@ -69,14 +69,15 @@ public class LoginAction extends BaseAction<Login>{
 			jsonObjectLoginInfo.put("data", jsonObjectLogintemp);
 			
 		}else{					//不允许登陆
-			jsonObjectLoginInfo.put("status", "success");
-			jsonObjectLoginInfo.put("message", "不允许在90分钟之内该设备登录两个用户");
+			jsonObjectLoginInfo.put("status", "error");
+			jsonObjectLoginInfo.put("message", "对不起，该设备90分钟之内只允许一个学生登录");
 			jsonObjectLoginInfo.put("data", "");
+//			return ERROR;
 		}
 		
 		out.write(jsonObjectLoginInfo.toString());
 		
-		return SUCCESS;
+//		return SUCCESS;
 	}
 	
 	
@@ -107,10 +108,11 @@ public class LoginAction extends BaseAction<Login>{
 		
 		UserLoginRecord userLoginRecord = 
 				userLoginRecordService.getUserLoginRecordByLast_login_device_id(
-						login.getLast_login_device_id());
+						login.getDevice_id());
 		
 		if(userLoginRecord == null){		//该设备第一次使用	允许登录
 			userLoginRecord = createUserLoginRecord(user.getUid());
+			userLoginRecord.setLast_login_time(new Date().getTime());
 			userLoginRecordService.saveUserLoginRecord(userLoginRecord);
 			
 			login_flag = true;	//true：允许登录
@@ -119,11 +121,12 @@ public class LoginAction extends BaseAction<Login>{
 			//再判断这次的用户和上次的用户是否相同
 			UserOtherAuths userOtherAuths = 	//获得上次的UserOtherAuths对象
 					userLoginRecordService.getUserOtherAuthsByLast_login_device_id(
-							login.getLast_login_device_id());
+							login.getDevice_id());
 			String last_identifier = userOtherAuths.getIdentifier();			//获得上次的认证id
 			if(last_identifier.equals(login.getIdentifier())){	//两个用户一致
 				//相同，允许登录
 				//说明上次登录的用户和本次登录的用户一致 允许登录，修改信息，返回user
+				userLoginRecord.setLast_login_time(new Date().getTime());
 				userLoginRecordService.updateUserLoginRecord(userLoginRecord);//更新登录信息
 			}else{												//两个用户不一致
 				//不相同，判断时间满足90分钟
@@ -133,10 +136,12 @@ public class LoginAction extends BaseAction<Login>{
 				long time_disparity = this_time - last_login_time;//获得时间差
 				if(time_disparity>3*60*1000){
 					//满足90分钟		允许登录
+					userLoginRecord.setLast_login_time(new Date().getTime());
+					userLoginRecordService.updateUserLoginRecord(userLoginRecord);
 					login_flag = true;	//true：允许登录
 				}else {
 					//不满足90分钟	不允许登录
-					login_flag = false;	//false：允许登录
+					login_flag = false;	//false：不允许登录
 				}
 			}
 				
@@ -150,7 +155,7 @@ public class LoginAction extends BaseAction<Login>{
 	public User createNewUser(){
 		User user = new User();
 //		user.setUid(uid);
-		user.setNickname(login.getNickName());
+		user.setNickname(login.getNickname());
 		user.setAvatar("这是默认头像url");
 		user.setSex(0);
 		user.setRank(0);
@@ -180,8 +185,8 @@ public class LoginAction extends BaseAction<Login>{
 		userLoginRecord.setUid(uid);
 		userLoginRecord.setFirst_login_time(new Date().getTime());		//把当前时间当做首次登录时间
 		userLoginRecord.setLast_login_time(new Date().getTime());		//因为是第一次登录，把当前时间设置为上次登陆时间
-		userLoginRecord.setLast_login_device(login.getLast_login_device());		//因为是首次登录，把当前设备设置为上次登录设备
-		userLoginRecord.setLast_login_device_id(login.getLast_login_device_id());	//因为是首次登录，把当前设备id当做上次登录设备id
+		userLoginRecord.setLast_login_device(login.getDevice_name());		//因为是首次登录，把当前设备设置为上次登录设备
+		userLoginRecord.setLast_login_device_id(login.getDevice_id());	//因为是首次登录，把当前设备id当做上次登录设备id
 		return userLoginRecord;
 	}
 }
