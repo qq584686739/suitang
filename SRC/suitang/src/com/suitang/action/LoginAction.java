@@ -88,6 +88,8 @@ public class LoginAction extends BaseAction<Login>{
 		String identity_type = login.getIdentity_type();		//得到认证类型
 		String identifier = login.getIdentifier();				//得到认证id
 		
+		
+		//根据前台传来的认证类型和认证id去得到uid，再根据uid得到user
 		user = userOtherAuthsService.getUserByIdentity_typeAndIdentifier(
 				identity_type, identifier);
 		if(user==null){				//没授权，说明数据库不存在该数据，应该新建数据存储并返回
@@ -100,6 +102,8 @@ public class LoginAction extends BaseAction<Login>{
 		}else{			//说明数据库存在数据，更新数据，返回user
 			userService.updateUser(user);
 		}
+		
+		//验证是否登陆过
 		
 		UserLoginRecord userLoginRecord = 
 				userLoginRecordService.getUserLoginRecordByLast_login_device_id(

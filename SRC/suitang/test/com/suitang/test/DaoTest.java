@@ -79,7 +79,7 @@ public class DaoTest {
 		UserDao userDao = (UserDao) context.getBean("userDao");
 		
 		try {
-			User user = userDao.getUserById(1);
+			User user = userDao.getTById(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

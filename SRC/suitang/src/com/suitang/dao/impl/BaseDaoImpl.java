@@ -38,7 +38,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 	}
 
 	@Override
-	public T getUserById(Serializable uid){
+	public T getTById(Serializable uid){
 		return (T) this.getHibernateTemplate().get(entityClass,uid);
 	}
 	

@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUserById(Serializable uid) {
 		try {
-			return userDao.getUserById(uid);
+			return userDao.getTById(uid);
 		} catch (Exception e) {
 			return null;
 		}
