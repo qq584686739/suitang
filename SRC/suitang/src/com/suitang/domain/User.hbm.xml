@@ -6,7 +6,7 @@
 <hibernate-mapping>
 	<class name="com.suitang.domain.User" table="user">
 		<id name="uid" type="int" column="uid">
-			<generator class="increment"></generator>
+			<generator class="identity"></generator>
 		</id>
 		<property name="nickname" type="string" column="nickname"></property>
 		<property name="avatar" type="string" column="avatar"></property>

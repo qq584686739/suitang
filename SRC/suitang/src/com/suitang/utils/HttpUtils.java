@@ -241,7 +241,8 @@ public class HttpUtils {
             conn.setRequestMethod(mRequestMethod);
             conn.setConnectTimeout(mTimeout);
             conn.setReadTimeout(mTimeout);
-            conn.setAllowUserInteraction(mAllowAutoJump);
+            conn.setInstanceFollowRedirects(mAllowAutoJump);
+//            conn.setAllowUserInteraction(mAllowAutoJump);
             //设置请求头
             if (mHeadProperty != null) {
                 Set<Map.Entry<String, String>> entries = mHeadProperty.entrySet();

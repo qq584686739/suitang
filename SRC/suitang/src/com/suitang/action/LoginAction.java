@@ -101,6 +101,13 @@ public class LoginAction extends BaseAction<Login>{
 			userOtherAuthsService.saveUserOtherAuths(userOtherAuths);
 			
 		}else{			//说明数据库存在数据，更新数据，返回user
+			user.setAvatar(login.getAvatar());	//更新头像
+			user.setNickname(login.getNickname());	//更新昵称
+			if(login.getSex()==1){
+				user.setSex(1);			//更新性别
+			}else{
+				user.setSex(0);			//更新性别
+			}
 			userService.updateUser(user);
 		}
 		
@@ -123,11 +130,14 @@ public class LoginAction extends BaseAction<Login>{
 					userLoginRecordService.getUserOtherAuthsByLast_login_device_id(
 							login.getDevice_id());
 			String last_identifier = userOtherAuths.getIdentifier();			//获得上次的认证id
-			if(last_identifier.equals(login.getIdentifier())){	//两个用户一致
+			String last_identity_type = userOtherAuths.getIdentity_type();		//获得上册认证类型
+			if(last_identifier.equals(login.getIdentifier())
+					&& last_identity_type.equals(login.getIdentity_type())){	//两个用户一致
 				//相同，允许登录
 				//说明上次登录的用户和本次登录的用户一致 允许登录，修改信息，返回user
 				userLoginRecord.setLast_login_time(new Date().getTime());
 				userLoginRecordService.updateUserLoginRecord(userLoginRecord);//更新登录信息
+				login_flag = true;	//true：允许登录
 			}else{												//两个用户不一致
 				//不相同，判断时间满足90分钟
 				//说明上次登录的用户和本次登录的用户不一致
@@ -155,10 +165,27 @@ public class LoginAction extends BaseAction<Login>{
 	public User createNewUser(){
 		User user = new User();
 //		user.setUid(uid);
-		user.setNickname(login.getNickname());
-		user.setAvatar("这是默认头像url");
-		user.setSex(0);
-		user.setRank(0);
+		if(login.getNickname()==null){
+			user.setNickname("默认昵称！");
+		}else{
+			user.setNickname(login.getNickname());
+		}
+		
+		if(login.getAvatar()==null){
+			user.setAvatar("这是默认头像url");
+		}else {
+			user.setAvatar(login.getAvatar());
+		}
+//		if(login.getSex()==null){
+//			
+//		}
+		if(login.getSex()==1){
+			user.setSex(1);
+		}else{
+			user.setSex(0);
+		}
+		
+		user.setRank(0);	//没有传入职位，设置默认职位
 		
 		return user;
 	}
@@ -173,7 +200,7 @@ public class LoginAction extends BaseAction<Login>{
 		userOtherAuths.setUid(uid);
 		userOtherAuths.setIdentity_type(login.getIdentity_type());
 		userOtherAuths.setIdentifier(login.getIdentifier());
-		userOtherAuths.setToken("这是token，我不知道传什么给你！");
+		userOtherAuths.setToken("创建一个默认的token，传给你");
 		userOtherAuths.setInvalid_time(null);
 		
 		return userOtherAuths;
