@@ -76,16 +76,39 @@
 
 
 >获取课表
-检查登录状态
+	接口：http://139.129.11.18:8090/suitang/course_get.action
 
-参数  	school  "hbue" 学校
-		id		13150227
+
+
+			【检查登录状态】
+
+
+
+参数  		school  "hbue" 		学校
+		id	13150227
 		psw 	******
+		xnm			#学年名	
+		xqm			#学期名	
 		
 		返回
 		类别 老师 学生 
-		课表 
+		课表 	（cid、c_name、c_address、c_time）
 		课表id 在教务处获取到的数据里面有 cd_id字段
+
+		
+		xnm
+
+    <option value="2016">2016-2017</option>
+    <option value="2015">2015-2016</option>							
+    <option value="2014">2014-2015</option>	
+    <option value="2013">2013-2014</option>
+    <option value="2012">2012-2013</option>
+
+
+		xqm
+    <option value="3">1</option>			第1学期
+    <option value="12" selected="selected">2</option>	第2学期
+    <option value="16">3</option>			第3学期
 		
 		
 		

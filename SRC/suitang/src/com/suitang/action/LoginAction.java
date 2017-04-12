@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -23,6 +24,9 @@ import com.suitang.service.UserService;
 @Scope(value="prototype")//如果交给spring管理，scope = "prototype"
 public class LoginAction extends BaseAction<Login>{
 	
+	/**设置session的存活时间是3小时*/
+	private static final int SESSION_TIME = 60 * 60 * 3;
+
 	/**获得模型驱动*/
 	private Login login = this.getModel();
 	
@@ -50,6 +54,14 @@ public class LoginAction extends BaseAction<Login>{
 	/**登录返回的json格式数据*/
 	JSONObject jsonObjectLoginInfo = new JSONObject();
 	
+	/**初始化数据*/
+	public LoginAction(){
+		jsonObjectLoginInfo.put("status", "error");
+		jsonObjectLoginInfo.put("message", "服务器忙");
+		jsonObjectLoginInfo.put("data", "");
+	}
+	
+	/**构造方法*/
 	public void login(){
 		try {
 			request.setCharacterEncoding("utf-8");
@@ -61,6 +73,12 @@ public class LoginAction extends BaseAction<Login>{
 		}
 		
 		if(login_flag){			//允许登录
+			HttpSession session = request.getSession();
+			
+			/**把加密过后的学号当键值， 把0和1当value。0：未登录。1：已登录*/
+			session.setAttribute(login.getIdentifier(), "1");	//把秘钥放到session里
+			session.setMaxInactiveInterval(SESSION_TIME);
+			
 			jsonObjectLoginInfo.put("status", "success");
 			jsonObjectLoginInfo.put("message", "");
 			

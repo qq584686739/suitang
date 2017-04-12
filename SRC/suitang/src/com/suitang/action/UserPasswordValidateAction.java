@@ -5,20 +5,18 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
 
 import net.sf.json.JSONObject;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.suitang.domain.User;
 import com.suitang.domain.UserPassword;
-import com.suitang.service.UserService;
-import com.suitang.utils.MD5Util;
+import com.suitang.utils.DESUtils;
+//import com.suitang.utils.MD5Util;
+import com.suitang.utils.Secret;
 import com.suitang.utils.ValidateUtil;
 
-import freemarker.core.ReturnInstruction.Return;
 
 @SuppressWarnings("serial")
 @Controller("userPasswordValidateAction")
@@ -70,7 +68,8 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 			
 			JSONObject jsonObjectTemp = new JSONObject();
 			
-			jsonObjectTemp.put("authId", MD5Util.md5(userPassword.getUser()));	//认证id	md5加密
+//			jsonObjectTemp.put("authId", MD5Util.md5(userPassword.getUser()));	//认证id	md5加密
+			jsonObjectTemp.put("authId", DESUtils.encrypt(userPassword.getUser(),Secret.KEY));	//认证DES加密
 			jsonObjectTemp.put("nickname", userPassword.getUser());				//昵称，默认学号
 			jsonObjectTemp.put("avatar", "");									//头像,暂时为空
 			jsonObjectTemp.put("sex", 0);										//性别
