@@ -31,4 +31,10 @@ public class CourseServiceImpl implements CourseService{
 	public Course getUserById(Serializable uid) {
 		return courseDao.getTById(uid);
 	}
+
+	@Override
+	public Course getCourseByPrimarykeys(String cid, String cd_id, int c_year,
+			int c_term) {
+		return courseDao.getCourseByPrimarykeys(cid,cd_id,c_year,c_term);
+	}
 }

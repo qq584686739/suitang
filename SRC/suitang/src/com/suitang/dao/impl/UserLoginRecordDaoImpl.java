@@ -49,4 +49,27 @@ public class UserLoginRecordDaoImpl extends BaseDaoImpl<UserLoginRecord> impleme
 		}
 		return null;
 	}
+
+	@Override
+	public User getUserByLast_login_device_id(String last_login_device_id) {
+		SessionFactory sessionFactory = 
+				this.getHibernateTemplate().getSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		String hql = "FROM User u WHERE u.uid In ( "
+				+ "SELECT ulr.uid "
+				+ "FROM "
+				+ "UserLoginRecord ulr "
+				+ "WHERE 1=1 AND "
+				+ "ulr.last_login_device_id = '" + last_login_device_id + "' )";
+		Query query = session.createQuery(hql);
+		List<User> list = query.list();
+		
+		session.close();
+		
+		if(list!=null && list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
 }

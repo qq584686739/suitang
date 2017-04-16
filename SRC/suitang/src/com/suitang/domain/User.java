@@ -1,6 +1,7 @@
 package com.suitang.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class User implements Serializable{
@@ -11,7 +12,7 @@ public class User implements Serializable{
 	private String email;	//邮箱
 	private Integer rank; // 职位0：学生 1：老师
 	
-	private Set<Course> courses;
+	private Set<Course> courses = new HashSet<Course>();
 	
 	public Set<Course> getCourses() {
 		return courses;

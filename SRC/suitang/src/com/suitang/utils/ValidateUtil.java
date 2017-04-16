@@ -14,7 +14,7 @@ public class ValidateUtil {
 		try {
 			HttpUtils httpUtils = new HttpUtils(requestUrl,headProperty, requestProperty);
 			
-			/**我这里好像没有设置请求类型	POST/GET	*/
+			/**我这里好像没有设置请求类型	POST/GET*/
 			HttpResult httpResult = httpUtils.request();
 			jsonObject = JSONObject.fromObject(httpResult.getResponseBodyString("utf-8"));
 			

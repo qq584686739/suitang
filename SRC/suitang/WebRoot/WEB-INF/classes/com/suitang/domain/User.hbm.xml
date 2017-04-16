@@ -18,7 +18,7 @@
 		<!-- 
 			table第三张表
 		-->
-		<set name="courses" table="schedule" cascade="save-update" lazy="false">
+		<set name="courses" table="schedule" lazy="false">
 			<key>
 			<!-- 
 				外键

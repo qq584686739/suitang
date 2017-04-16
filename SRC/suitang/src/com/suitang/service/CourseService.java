@@ -37,4 +37,21 @@ public interface CourseService {
 	 * @Return:Course
 	 */
 	public Course getUserById(Serializable uid);
+	
+	
+	/**
+	 * 
+	 * getCourseByPrimarykeys
+	 * @Description: 根据四个主键得到Course
+	 * @Author:肖家豪(作者)
+	 * @Version:v1.00(版本号)
+	 * @Create:Date:2017年4月16日 下午8:32:40
+	 * @param cid
+	 * @param cd_id
+	 * @param c_year
+	 * @param c_term
+	 * @return
+	 * @Return:Course
+	 */
+	public Course getCourseByPrimarykeys(String cid, String cd_id, int c_year,int c_term);
 }

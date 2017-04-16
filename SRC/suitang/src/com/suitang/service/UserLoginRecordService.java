@@ -1,5 +1,6 @@
 package com.suitang.service;
 
+import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
 import com.suitang.domain.UserOtherAuths;
 
@@ -49,4 +50,7 @@ public interface UserLoginRecordService {
 	 */
 	public UserOtherAuths getUserOtherAuthsByLast_login_device_id(
 			String last_login_device_id);
+	
+	
+	public User getUserByLast_login_device_id(String last_login_device_id);
 }

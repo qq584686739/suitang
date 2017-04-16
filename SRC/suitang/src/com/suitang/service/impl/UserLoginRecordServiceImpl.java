@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.suitang.dao.UserLoginRecordDao;
+import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
 import com.suitang.domain.UserOtherAuths;
 import com.suitang.service.UserLoginRecordService;
@@ -36,5 +37,10 @@ public class UserLoginRecordServiceImpl implements UserLoginRecordService{
 	public UserOtherAuths getUserOtherAuthsByLast_login_device_id(
 			String last_login_device_id) {
 		return userLoginRecordDao.getUserOtherAuthsByLast_login_device_id(last_login_device_id);
+	}
+
+	@Override
+	public User getUserByLast_login_device_id(String last_login_device_id) {
+		return userLoginRecordDao.getUserByLast_login_device_id(last_login_device_id);
 	}
 }

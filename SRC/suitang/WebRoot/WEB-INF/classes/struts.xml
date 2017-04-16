@@ -35,7 +35,6 @@
 			<result name="success">/success.jsp</result>
 			<result name="error">/error.jsp</result>
 			<result name="input">/login.jsp</result>
-			
 		</action>
 		
 		
@@ -46,8 +45,11 @@
 		</action>
 		
 		
-		
-		
+		<action name="schoolLogin_*" class="com.suitang.action.SchoolLoginAction" method="{1}">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
 	</package>
 
 </struts>

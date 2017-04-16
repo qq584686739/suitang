@@ -1,6 +1,7 @@
 package com.suitang.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Course implements Serializable {
@@ -16,7 +17,7 @@ public class Course implements Serializable {
 	// private String c_address; //上课地点
 	private String c_time; // 上课时间
 
-	private Set<User> users;
+	private Set<User> users = new HashSet<User>();
 
 	public String getCid() {
 		return cid;
