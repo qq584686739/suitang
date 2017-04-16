@@ -89,6 +89,7 @@ public class UserPasswordValidateAction extends BaseAction<UserPassword>{
 	@Override
 	public void validate() {
 		
+		/**请求参数*/
 		Map<String, String> requestProperty = new HashMap<String, String>();
 		requestProperty.put("yhm", userPassword.getUser());
 		requestProperty.put("mm", userPassword.getPassword());

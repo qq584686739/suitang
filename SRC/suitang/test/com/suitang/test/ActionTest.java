@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.suitang.action.UserAction;
 import com.suitang.action.UserLocalAuthAction;
 import com.suitang.domain.User;
-import com.suitang.domain.User_Local_Auths;
+import com.suitang.domain.UserLocalAuths;
 import com.suitang.service.UserService;
 
 public class ActionTest {
@@ -16,10 +16,10 @@ public class ActionTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserLocalAuthAction userLocalAuthAction = (UserLocalAuthAction) context.getBean("userLocalAuthAction");
 	
-		User_Local_Auths user_Local_Auths = new User_Local_Auths();
-		user_Local_Auths.setPhone_no("18222626942");
-		user_Local_Auths.setEmail("584686739@qq.com");
-		user_Local_Auths.setPassword("xiaojiahao1997");
+//		User_Local_Auths user_Local_Auths = new User_Local_Auths();
+//		user_Local_Auths.setPhone_no("18222626942");
+//		user_Local_Auths.setEmail("584686739@qq.com");
+//		user_Local_Auths.setPassword("xiaojiahao1997");
 		
 		userLocalAuthAction.save();
 	}

@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   	<form action="http://139.129.11.18:8090/suitang/userLogin_login.action" method="post"> 
+   	<form action="${pageContext.request.contextPath }/userLogin_login.action" method="post"> 
    <!-- 	<form action="http://localhost:8080/suitang/userLogin_login.action" method="post"> -->
    	
 		认证类型：<input type="text" name="identity_type" /> <br/>

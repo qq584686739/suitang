@@ -12,7 +12,7 @@ import com.suitang.dao.impl.UserLocalAuthDaoImpl;
 import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
 import com.suitang.domain.UserOtherAuths;
-import com.suitang.domain.User_Local_Auths;
+import com.suitang.domain.UserLocalAuths;
 import com.suitang.service.UserLoginRecordService;
 
 public class DaoTest {
@@ -21,7 +21,7 @@ public class DaoTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserLocalAuthDao userLocalAuthDao = (UserLocalAuthDaoImpl) context.getBean("userLocalAuthDao");
 		
-		User_Local_Auths user = new User_Local_Auths();
+		UserLocalAuths user = new UserLocalAuths();
 //		user.setUid(10);
 		user.setPhone_no("123456789");
 		user.setEmail("肖家豪584686739@qq.com");
@@ -34,7 +34,7 @@ public class DaoTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserLocalAuthDao userLocalAuthDao = (UserLocalAuthDaoImpl) context.getBean("userLocalAuthDao");
 		
-		User_Local_Auths user = new User_Local_Auths();
+		UserLocalAuths user = new UserLocalAuths();
 		user.setUid(16);
 		user.setPhone_no("16");
 		user.setEmail("16");

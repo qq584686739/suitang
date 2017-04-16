@@ -42,11 +42,12 @@
 	<property name="hibernate.show_sql">true</property>
 
 	<!-- 添加映射文件 -->
-	<mapping resource="com/suitang/domain/User_Local_Auths.hbm.xml" />
 	<mapping resource="com/suitang/domain/UserLoginRecord.hbm.xml" />
-	<mapping resource="com/suitang/domain/User.hbm.xml" />
 	<mapping resource="com/suitang/domain/UserOtherAuths.hbm.xml" />
+	<mapping resource="com/suitang/domain/LoginStatus.hbm.xml" />
+	<mapping resource="com/suitang/domain/User.hbm.xml" />
 	<mapping resource="com/suitang/domain/Course.hbm.xml" />
+	<mapping resource="com/suitang/domain/UserLocalAuths.hbm.xml" />
 
 
 </session-factory>

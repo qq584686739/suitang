@@ -1,7 +1,9 @@
 package com.suitang.action;
 
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -12,21 +14,21 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.suitang.domain.Login;
+import com.suitang.domain.LoginStatus;
 import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
 import com.suitang.domain.UserOtherAuths;
+import com.suitang.service.LoginStatusService;
 import com.suitang.service.UserLoginRecordService;
 import com.suitang.service.UserOtherAuthsService;
 import com.suitang.service.UserService;
+import com.suitang.utils.Secret;
 
 @SuppressWarnings("serial")
 @Controller("loginAction")
 @Scope(value="prototype")//如果交给spring管理，scope = "prototype"
 public class LoginAction extends BaseAction<Login>{
 	
-	/**设置session的存活时间是3小时*/
-	private static final int SESSION_TIME = 60 * 60 * 3;
-
 	/**获得模型驱动*/
 	private Login login = this.getModel();
 	
@@ -38,6 +40,9 @@ public class LoginAction extends BaseAction<Login>{
 	
 	@Resource
 	private UserLoginRecordService userLoginRecordService;
+	
+	@Resource
+	private LoginStatusService loginStatusService;
 	
 	private PrintWriter out = null;
 	
@@ -52,10 +57,11 @@ public class LoginAction extends BaseAction<Login>{
 	private User user;
 	
 	/**登录返回的json格式数据*/
-	JSONObject jsonObjectLoginInfo = new JSONObject();
+	private static JSONObject jsonObjectLoginInfo = null;
 	
 	/**初始化数据*/
-	public LoginAction(){
+	static{
+		jsonObjectLoginInfo = new JSONObject();
 		jsonObjectLoginInfo.put("status", "error");
 		jsonObjectLoginInfo.put("message", "服务器忙");
 		jsonObjectLoginInfo.put("data", "");
@@ -73,16 +79,29 @@ public class LoginAction extends BaseAction<Login>{
 		}
 		
 		if(login_flag){			//允许登录
-			HttpSession session = request.getSession();
 			
+			/**更新数据库的登录状态*/
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setUid(user.getUid());							//对应的userid
+			String uuidString = UUID.randomUUID().toString();			//生成uuid
+			loginStatus.setLogin_id(UUID.randomUUID().toString());		//生成uuid
+			loginStatus.setExpiration_time(Secret.expiration_time);			//设置过期时间
+			loginStatusService.saveLoginStatus(loginStatus);
+			
+			/**获得session*/
+			HttpSession session = request.getSession();
 			/**把加密过后的学号当键值， 把0和1当value。0：未登录。1：已登录*/
-			session.setAttribute(login.getIdentifier(), "1");	//把秘钥放到session里
-			session.setMaxInactiveInterval(SESSION_TIME);
+			/**login.getIdentifier()是学号进行加密后的数据*/
+			session.setAttribute(uuidString, 1);	//把秘钥放到session里
+			session.setMaxInactiveInterval(Secret.SESSION_TIME);	//设置session的默认时间
+			
+			System.out.println("uuidString = " + uuidString);
 			
 			jsonObjectLoginInfo.put("status", "success");
 			jsonObjectLoginInfo.put("message", "");
 			
 			JSONObject jsonObjectLogintemp = JSONObject.fromObject(user);
+			jsonObjectLogintemp.put("token", uuidString);
 			
 			jsonObjectLoginInfo.put("data", jsonObjectLogintemp);
 			
@@ -99,14 +118,11 @@ public class LoginAction extends BaseAction<Login>{
 	}
 	
 	
-	
-	
 	@Override
 	public void validate() {
 		
 		String identity_type = login.getIdentity_type();		//得到认证类型
 		String identifier = login.getIdentifier();				//得到认证id
-		
 		
 		//根据前台传来的认证类型和认证id去得到uid，再根据uid得到user
 		user = userOtherAuthsService.getUserByIdentity_typeAndIdentifier(
@@ -161,8 +177,8 @@ public class LoginAction extends BaseAction<Login>{
 				//说明上次登录的用户和本次登录的用户不一致
 				long last_login_time = userLoginRecord.getLast_login_time();		//获得上次登录时间，用来判断是否满足90分钟
 				long this_time = new Date().getTime();
-				long time_disparity = this_time - last_login_time;//获得时间差
-				if(time_disparity>3*60*1000){
+				long time_disparity = (this_time - last_login_time)/1000;//获得时间差
+				if(time_disparity>Secret.SESSION_TIME){
 					//满足90分钟		允许登录
 					userLoginRecord.setLast_login_time(new Date().getTime());
 					userLoginRecordService.updateUserLoginRecord(userLoginRecord);

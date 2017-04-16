@@ -42,6 +42,8 @@ public class UserLoginRecordDaoImpl extends BaseDaoImpl<UserLoginRecord> impleme
 		Query query = session.createQuery(hql);
 		List<UserOtherAuths> list = query.list();
 		
+		session.close();
+		
 		if(list!=null && list.size()>0){
 			return list.get(0);
 		}

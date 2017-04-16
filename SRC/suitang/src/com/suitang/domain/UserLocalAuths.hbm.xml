@@ -4,11 +4,13 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.suitang.domain.User_Local_Auths" table="user_local_auths">
-		<id name="uid" type="int" column="uid">
+	<class name="com.suitang.domain.UserLocalAuths" table="user_local_auths">
+		<id name="school_no" type="string" column="school_no">
 			<generator class="assigned"></generator>
 		</id>
+		<property name="uid" type="int" column="uid"></property>
 		<property name="password" type="string" column="password"></property>
+		<property name="rand" type="int" column="rand"></property>
 		<property name="phone_no" type="string" column="phone_no"></property>
 		<property name="email" type="string" column="email"></property>
 	</class>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.suitang.domain.LoginStatus" table="login_status">
+		<id name="login_id" type="string" column="login_id">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="uid" type="int" column="uid"></property>
+		<property name="expiration_time" type="timestamp" column="expiration_time"></property>
+	</class>
+</hibernate-mapping>

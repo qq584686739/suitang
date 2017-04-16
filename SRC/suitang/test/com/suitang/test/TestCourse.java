@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -70,16 +72,38 @@ public class TestCourse {
 		
 		for(int i=0;i<cb.size();i++){
 			JSONObject jsonObject = (JSONObject)cb.get(i);
-			String cid = (String) jsonObject.get("cd_id");				//获得课程id
-			String c_name = (String) jsonObject.get("kcmc");			//获得课程名
-			String c_address = (String) jsonObject.get("cdmc");			//获得上课地点
-			String c_time = (String) jsonObject.get("zcd");				//获得上课时间
+			
+			String cd_id = (String) jsonObject.get("cd_id");				//获得教室id
+			String cd_mc = (String) jsonObject.get("cdmc");					//获得教室名称
+			String c_lesson = (String) jsonObject.get("jc");				//获得上课节数
+			String cid = (String) jsonObject.get("jxbmc");					//获得课程id
+			String c_name = (String) jsonObject.get("kcmc");				//获得课程名字
+			String c_teacher = (String) jsonObject.get("xm");				//获得任课老师姓名
+			int c_year = (Integer) jsonObject.get("xnm");					//获得学年
+			String c_time = (String) jsonObject.get("xqj");					//获得星期几
+			int c_term = (Integer) jsonObject.get("xqm");					//获得学期
+			String c_week = (String) jsonObject.get("zcd");					//获得上课周数
 			
 			Course course = new Course();
+			course.setCd_id(cd_id);
+			course.setCd_mc(cd_mc);
+			course.setC_lesson(c_lesson);
 			course.setCid(cid);
 			course.setC_name(c_name);
-			course.setC_address(c_address);
+			course.setC_teacher(c_teacher);
+			course.setC_year(c_year);
 			course.setC_time(c_time);
+			course.setC_term(c_term);
+			
+			int[] cWeek = format(c_week);		//格式化上课周数
+			
+			StringBuffer sb = new StringBuffer();
+			while(cWeek[i]!=0){
+				sb.append(cWeek[i++] + ",");
+			}
+			sb.deleteCharAt(sb.length()-1);
+			
+			course.setC_week(sb.toString());
 			
 			//保存课程表
 			
@@ -88,5 +112,91 @@ public class TestCourse {
 			//返回返回课表信息
 			
 		}
+	}
+	private static int[] format(String c_week) {
+		int[] result = new int[1024];
+		int c = 0;
+		
+		int parity = 0;		//  0代表无单双。1：单，2双  3：只有一周
+		
+		String[] s = c_week.split(",");
+		for(int i=0;i<s.length;i++){
+			String s2 = s[i];
+			//用b的长度来判断是否含有单双周  ， 如果含有单双周长度>=7,否则没有单双周之分
+			if(s2.length()>=7){
+				//说明含有单双周的
+				//获得单周还是双周
+				String danOrShuang = s2.substring(s2.indexOf("(")+1, s2.indexOf(")"));
+				if(danOrShuang.equals("单")){
+					//单周
+					parity=1;
+					
+				}else if(danOrShuang.equals("双")){
+					//双周
+					parity = 2;
+				}
+				
+			}else if(s2.length()<=3){
+				//只有一周，直接处理掉就continue
+				parity = 3;
+				int x = Integer.valueOf(s2.substring(0, s2.indexOf("周")));
+				result[c++] = x;
+				continue;
+			}else{
+				//不含有单双周之分
+				parity = 0;
+				
+			}
+			int nub1 = Integer.valueOf(s2.substring(0, s2.indexOf("-")));
+			int nub2 = Integer.valueOf(s2.substring(s2.indexOf("-")+1, s2.indexOf("周")));
+			if(parity==0){
+				//无单双之分
+				while(nub1<=nub2){
+					result[c++] = nub1;
+					nub1++;
+				}
+				continue;
+			}else if(parity == 1){
+				//单周
+				while(nub1<=nub2 && nub1%2!=0){
+					result[c++] = nub1;
+					nub1+=2;
+				}
+				continue;
+			}else if(parity == 2){
+				//双周
+				while(nub1<=nub2 && nub1%2==0){
+					result[c++] = nub1;
+					nub1+=2;
+				}
+				continue;
+			}
+		}
+		return result;
+	}
+	
+	
+	@Test
+	public void f(){
+//		String s = "1-2周,4-18周(双),19周";
+//		String s = "3-17周(单)";
+//		String s = "1-19周";
+		String s = "1-9周";
+//		String s = "1-19周";
+		int[] cWeek = format(s);
+		int i=0;
+		
+		StringBuffer sb = new StringBuffer();
+		while(cWeek[i]!=0){
+			sb.append(cWeek[i++] + ",");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		System.out.println(sb.toString());
+		
+		
+		
+//		while(cWeek[i]!=0){
+//			System.out.print(cWeek[i++] + ", ");
+//		}
 	}
 }

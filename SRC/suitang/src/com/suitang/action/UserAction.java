@@ -26,6 +26,7 @@ public class UserAction extends BaseAction<User>{
 		user.setNickname("这是我的昵称");
 		user.setAvatar("这是我的头像地址");
 		user.setSex(0);
+		user.setEmail("584686739@qq.com");
 		user.setRank(0);
 		
 		userService.saveUser(user);

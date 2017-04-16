@@ -4,13 +4,39 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.suitang.domain.User" table="user">
+	<class name="com.suitang.domain.User" table="user" >
 		<id name="uid" type="int" column="uid">
 			<generator class="identity"></generator>
 		</id>
 		<property name="nickname" type="string" column="nickname"></property>
 		<property name="avatar" type="string" column="avatar"></property>
 		<property name="sex" type="int" column="sex"></property>
+		<property name="email" type="string" column="email"></property>
 		<property name="rank" type="int" column="rank"></property>
+		
+		
+		<!-- 
+			table第三张表
+		-->
+		<set name="courses" table="schedule" cascade="save-update" lazy="false">
+			<key>
+			<!-- 
+				外键
+			-->
+			<column name="uid"></column>
+			</key>
+			<!-- 
+				column外键
+			-->
+			<!-- <many-to-many class="com.suitang.domain.Course" 
+				column="cid"></many-to-many> -->
+			<many-to-many class="com.suitang.domain.Course">
+				<column name="cid" ></column>
+				<column name="cd_id" ></column>
+				<column name="c_year" ></column>
+				<column name="c_term" ></column>
+				
+			</many-to-many>
+		</set>
 	</class>
 </hibernate-mapping>

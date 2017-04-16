@@ -1,9 +1,19 @@
 package com.suitang.dao;
 
-import com.suitang.domain.User_Local_Auths;
+import java.io.Serializable;
 
-public interface UserLocalAuthDao extends BaseDao<User_Local_Auths>{
+import com.suitang.domain.User;
+import com.suitang.domain.UserLocalAuths;
+
+/**
+ * UserLocalAuthDao
+ * @author Xjh
+ *
+ */
+public interface UserLocalAuthDao extends BaseDao<UserLocalAuths>{
 
 	//用来写除了增删改查的其他方法
+	
+	public User getUserBySchool_no(Serializable school_no);
 	
 }

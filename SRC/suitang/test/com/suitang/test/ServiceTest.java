@@ -8,7 +8,7 @@ import com.suitang.dao.UserOtherAuthsDao;
 import com.suitang.domain.User;
 import com.suitang.domain.UserLoginRecord;
 import com.suitang.domain.UserOtherAuths;
-import com.suitang.domain.User_Local_Auths;
+import com.suitang.domain.UserLocalAuths;
 import com.suitang.service.UserLocalAuthService;
 import com.suitang.service.UserLoginRecordService;
 import com.suitang.service.UserOtherAuthsService;
@@ -21,7 +21,7 @@ public class ServiceTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserLocalAuthService userLocalAuthService = (UserLocalAuthServiceImpl) context.getBean("userLocalAuthService");
 	
-		User_Local_Auths user_Local_Auths = new User_Local_Auths();
+		UserLocalAuths user_Local_Auths = new UserLocalAuths();
 		user_Local_Auths.setPhone_no("18222626942");
 		user_Local_Auths.setEmail("584686739@qq.com");
 		user_Local_Auths.setPassword("xiaojiahao1997");
@@ -33,7 +33,7 @@ public class ServiceTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserLocalAuthService userLocalAuthService = (UserLocalAuthServiceImpl) context.getBean("userLocalAuthService");
 	
-		User_Local_Auths user_Local_Auths = new User_Local_Auths();
+		UserLocalAuths user_Local_Auths = new UserLocalAuths();
 		user_Local_Auths.setUid(16);
 		user_Local_Auths.setPhone_no("18222626942");
 		user_Local_Auths.setEmail("584686739@qq.com");

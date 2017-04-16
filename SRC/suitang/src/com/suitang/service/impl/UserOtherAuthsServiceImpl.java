@@ -8,7 +8,7 @@ import com.suitang.dao.UserLocalAuthDao;
 import com.suitang.dao.UserOtherAuthsDao;
 import com.suitang.domain.User;
 import com.suitang.domain.UserOtherAuths;
-import com.suitang.domain.User_Local_Auths;
+import com.suitang.domain.UserLocalAuths;
 import com.suitang.service.UserOtherAuthsService;
 
 @Service(value="userOtherAuthsService")
@@ -35,5 +35,11 @@ public class UserOtherAuthsServiceImpl implements UserOtherAuthsService{
 			String identifier) {
 		return userOtherAuthsDao.getUserByIdentity_typeAndIdentifier(
 				identity_type, identifier);
+	}
+
+
+	@Override
+	public User getUserByIdentifier(String identifier) {
+		return userOtherAuthsDao.getUserByIdentifier(identifier);
 	}
 }

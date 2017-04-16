@@ -16,7 +16,7 @@ public class CourseServiceTest {
 		Course course = new Course();
 		course.setCid("2");
 		course.setC_name("课程名2");
-		course.setC_address("上课地址2");
+		/*course.setC_address("上课地址2");*/
 		course.setC_time("上课时间2");
 		
 		courseService.saveCourse(course);
@@ -29,7 +29,7 @@ public class CourseServiceTest {
 		Course course = new Course();
 		course.setCid("2");
 		course.setC_name("课程名22");
-		course.setC_address("上课地址22");
+	/*	course.setC_address("上课地址22");*/
 		course.setC_time("上课时间22");
 		
 		courseService.updateCourse(course);

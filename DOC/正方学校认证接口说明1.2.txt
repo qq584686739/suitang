@@ -84,11 +84,11 @@
 
 
 
-参数  		school  "hbue" 		学校
-		id	13150227
-		psw 	******
-		xnm			#学年名	
-		xqm			#学期名	
+参数  	string	school  "hbue" 			学校
+	string	id	13150227	
+	string	psw 	******
+	string	xnm				#学年名	
+	string	xqm				#学期名	
 		
 		返回
 		类别 老师 学生 

@@ -15,4 +15,6 @@ public interface UserOtherAuthsDao extends BaseDao<UserOtherAuths>{
 	 */
 	public User getUserByIdentity_typeAndIdentifier(String identity_type, String identifier);
 	
+	public User getUserByIdentifier(String identifier);
+	
 }

@@ -14,4 +14,6 @@ public interface UserOtherAuthsService {
 	 */
 	public User getUserByIdentity_typeAndIdentifier(String identity_type,
 			String identifier);
+	
+	public User getUserByIdentifier(String identifier);
 }

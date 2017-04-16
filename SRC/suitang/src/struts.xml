@@ -34,7 +34,18 @@
 		<action name="userLogin_*" class="com.suitang.action.LoginAction" method="{1}">
 			<result name="success">/success.jsp</result>
 			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+			
 		</action>
+		
+		
+		<action name="course_*" class="com.suitang.action.CourseAction" method="{1}">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/error.jsp</result>
+		</action>
+		
+		
 		
 		
 	</package>

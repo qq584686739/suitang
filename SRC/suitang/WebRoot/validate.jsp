@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   	<form action="http://localhost:8080/suitang/login_openAuth.action" method="post">
+   	<form action="${pageContext.request.contextPath }/login_openAuth.action" method="post">
 		学号：<input type="text" name="user" /> <br/>
 		密码：<input type="password" name="password" /><br />
 		<input type="submit" value="登录"/>

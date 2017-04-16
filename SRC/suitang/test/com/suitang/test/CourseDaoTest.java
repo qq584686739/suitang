@@ -16,7 +16,7 @@ public class CourseDaoTest {
 		Course course = new Course();
 		course.setCid("1");
 		course.setC_name("课程名");
-		course.setC_address("上课地址");
+	/*	course.setC_address("上课地址");*/
 		course.setC_time("上课时间");
 		
 		courseDao.save(course);
