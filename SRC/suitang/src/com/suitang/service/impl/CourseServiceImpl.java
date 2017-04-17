@@ -34,7 +34,8 @@ public class CourseServiceImpl implements CourseService{
 
 	@Override
 	public Course getCourseByPrimarykeys(String cid, String cd_id, int c_year,
-			int c_term) {
-		return courseDao.getCourseByPrimarykeys(cid,cd_id,c_year,c_term);
+			int c_term, String c_week, String c_lesson, String c_time) {
+//		return courseDao.getCourseByPrimarykeys(cid,cd_id,c_year,c_term);
+		return courseDao.getCourseByPrimarykeys(cid, cd_id, c_year, c_term, c_week, c_lesson, c_time);
 	}
 }

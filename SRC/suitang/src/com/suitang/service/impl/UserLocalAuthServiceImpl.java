@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.suitang.dao.UserLocalAuthDao;
+import com.suitang.domain.LoginStatus;
 import com.suitang.domain.User;
 import com.suitang.domain.UserLocalAuths;
 import com.suitang.service.UserLocalAuthService;
@@ -29,5 +30,11 @@ public class UserLocalAuthServiceImpl implements UserLocalAuthService{
 	
 	public User getUserBySchool_no(Serializable school_no) {
 		return userLocalAuthDao.getUserBySchool_no(school_no);
+	}
+
+
+	@Override
+	public LoginStatus getLoginStatusBySchool_no(String school_no) {
+		return userLocalAuthDao.getLoginStatusBySchool_no(school_no);
 	}
 }

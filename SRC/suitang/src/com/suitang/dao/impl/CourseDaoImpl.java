@@ -16,7 +16,7 @@ public class CourseDaoImpl extends BaseDaoImpl<Course> implements CourseDao{
 
 	@Override
 	public Course getCourseByPrimarykeys(String cid, String cd_id, int c_year,
-			int c_term) {
+			int c_term, String c_week, String c_lesson,String c_time) {
 		SessionFactory sessionFactory = 
 				this.getHibernateTemplate().getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -25,7 +25,12 @@ public class CourseDaoImpl extends BaseDaoImpl<Course> implements CourseDao{
 				+ "c.cid='" + cid + "' AND "
 				+ "c.cd_id='" + cd_id + "' AND "
 				+ "c.c_year=" + c_year + " AND "
-				+ "c.c_term=" + c_term + ")";
+				+ "c.c_term=" + c_term + " AND "
+				+ "c.c_week='" + c_week + "' AND "
+				+ "c.c_lesson='" + c_lesson + "' AND "
+				+ "c.c_time='" + c_time + "')";
+				
+//		+ "c.c_term=" + c_term + ")";
 		Query query = session.createQuery(hql);
 		List<Course> list = query.list();
 		

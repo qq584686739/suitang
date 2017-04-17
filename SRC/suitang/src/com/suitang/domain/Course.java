@@ -17,7 +17,7 @@ public class Course implements Serializable {
 	// private String c_address; //上课地点
 	private String c_time; // 上课时间
 
-	private Set<User> users = new HashSet<User>();
+//	private Set<User> users = new HashSet<User>();
 
 	public String getCid() {
 		return cid;
@@ -99,21 +99,22 @@ public class Course implements Serializable {
 		this.c_time = c_time;
 	}
 
-	public Set<User> getUsers() {
-		return users;
-	}
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+//	public Set<User> getUsers() {
+//		return users;
+//	}
+//
+//	public void setUsers(Set<User> users) {
+//		this.users = users;
+//	}
+
+	
 
 	@Override
 	public String toString() {
 		return "Course [cid=" + cid + ", c_name=" + c_name + ", cd_id=" + cd_id
 				+ ", cd_mc=" + cd_mc + ", c_teacher=" + c_teacher + ", c_year="
 				+ c_year + ", c_term=" + c_term + ", c_week=" + c_week
-				+ ", c_lesson=" + c_lesson + ", c_time=" + c_time + ", users="
-				+ users + "]";
+				+ ", c_lesson=" + c_lesson + ", c_time=" + c_time + "]";
 	}
-
 }

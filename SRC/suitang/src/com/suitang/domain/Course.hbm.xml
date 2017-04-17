@@ -10,36 +10,42 @@
             <key-property name="cd_id" type="string" column="cd_id" />
             <key-property name="c_year" type="int" column="c_year" />
             <key-property name="c_term" type="int" column="c_term" />
+            <key-property name="c_week" type="string" column="c_week" />
+            <key-property name="c_lesson" type="string" column="c_lesson" />
+            <key-property name="c_time" type="string" column="c_time" />
         </composite-id>
 	
 		<property name="c_name" type="string" column="c_name"></property>
 		<property name="cd_mc" type="string" column="cd_mc"></property>
 		<property name="c_teacher" type="string" column="c_teacher"></property>
-		<property name="c_week" type="string" column="c_week"></property>
-		<property name="c_lesson" type="string" column="c_lesson"></property>
+	<!-- 	<property name="c_week" type="string" column="c_week"></property> -->
+		<!-- <property name="c_lesson" type="string" column="c_lesson"></property> -->
 		<!-- <property name="c_address" type="string" column="c_address"></property> -->
-		<property name="c_time" type="string" column="c_time"></property>
+		<!-- <property name="c_time" type="string" column="c_time"></property> -->
 		
 		
 		<!-- 
 			table 第三张表
 		-->
-		<set name="users" table="schedule" lazy="false">
+		<!-- <set name="users" table="schedule" lazy="false">
 			 <key>
 			
-			<!--外键  -->
+			外键 
 			
 				<column name="cid"></column>
 				<column name="cd_id"></column>
 				<column name="c_year"></column>
 				<column name="c_term"></column>
+				<column name="c_week"></column>
+				<column name="c_lesson"></column>
+				<column name="c_time"></column>
 			</key> 
 			
-			<!-- 
+			
 			column外键
-			-->
+			
 			<many-to-many class="com.suitang.domain.User" column="uid"></many-to-many>
-		</set>
+		</set> -->
 		
 			<!-- <composite-id>
 				<key-property name="cid"/>

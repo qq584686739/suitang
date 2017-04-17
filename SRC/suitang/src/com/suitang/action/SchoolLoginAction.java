@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.enterprise.inject.Default;
 import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
@@ -82,6 +83,11 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	/**需要返回的user*/
 	private User user;
 	
+	private User copyUser;
+	
+	/**如果登陆成功，且updateFlag=1，则是去更新数据库的状态，如果updateFlag=0，则是去创建数据库的状态*/
+	private int updateFlag = 0;		
+	
 	/**登录返回的json格式数据*/
 	private static  JSONObject jsonObject = new JSONObject();
 	
@@ -107,7 +113,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		if(errorInfo == 1){
 			//用户名不能为空
 			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，用户名不能为空!");
+			jsonObject.put("message", "对不起，用学号不能为空!");
 			jsonObject.put("data", "");
 			out.write(jsonObject.toString());
 			out.close();
@@ -142,13 +148,30 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		
 		if(login_flag){			//允许登录
 			
-			/**更新数据库的登录状态*/
-			LoginStatus loginStatus = new LoginStatus();
-			loginStatus.setUid(user.getUid());							//对应的userid
-			String uuidString = UUID.randomUUID().toString();			//生成uuid
-			loginStatus.setLogin_id(uuidString);		//生成uuid
-			loginStatus.setExpiration_time(Secret.expiration_time);			//设置过期时间
-			loginStatusService.saveLoginStatus(loginStatus);
+			String uuidString = null;
+			LoginStatus loginStatusTemp = null;
+			if(updateFlag == 1){
+				//去更新状态
+				loginStatusTemp = userLocalAuthService.getLoginStatusBySchool_no(schoolLogin.getSchool_no());
+			}else{
+				//去保存状态
+				/**保存数据库的登录状态*/
+				loginStatusTemp = new LoginStatus();
+				loginStatusTemp.setUid(user.getUid());							//对应的userid
+				uuidString = UUID.randomUUID().toString();					//生成uuid
+				loginStatusTemp.setLogin_id(uuidString);						//设置uuid
+			}
+			loginStatusTemp.setExpiration_time(Secret.expiration_time);		//设置过期时间
+			
+			if(updateFlag == 1){
+				//更新
+				loginStatusService.updateLoginStatus(loginStatusTemp);
+				uuidString = loginStatusTemp.getLogin_id();
+			}else{
+				//保存
+				loginStatusService.saveLoginStatus(loginStatusTemp);
+			}
+			
 			
 			/**获得session*/
 			HttpSession session = request.getSession();
@@ -159,29 +182,31 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			
 			System.out.println("uuidString = " + uuidString);
 			
-			
-			
 			//获得课程
-			Set<Course> courses = getCourse();
+//			Set<Course> courses = getCourse();
+			getCourse();
 			
-			JSONObject jsonObjectTemp = new JSONObject();
-			Iterator<Course> iterator = courses.iterator();
-			int i = 1;
-			while (iterator.hasNext()) {
-				Course course = (Course) iterator.next();
-				System.out.println(course.toString());
-				jsonObjectTemp.put(i++, course);
-			}
+//			JSONObject jsonObjectTemp = new JSONObject();
+//			Iterator<Course> iterator = courses.iterator();
+//			int i = 1;
+//			while (iterator.hasNext()) {
+//				Course course = (Course) iterator.next();
+//				System.out.println(course.toString());
+//				jsonObjectTemp.put(i++, course);
+//			}
+//			jsonObjectTemp.put("user", user);		//
 			
-			jsonObject.put("data", jsonObjectTemp);
+//			jsonObject.put("data", jsonObjectTemp);
+			jsonObject.put("data", copyUser);
 			
 			jsonObject.put("status", "success");
 			jsonObject.put("message", "");
-			jsonObject.put("token", uuidString);
+			response.setHeader("token", uuidString);			//把token放到响应头里
+//			jsonObject.put("token", uuidString);
 			
 		}else{					//不允许登陆
 			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，该设备90分钟之内只允许一个学生登录");
+			jsonObject.put("message", "对不起，该设备90分钟之内只允许一个学生登录!");
 			jsonObject.put("data", "");
 		}
 		
@@ -264,6 +289,17 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		}else{			
 			//数据库原来存在该用户
 			//这里应该加一些代码：根据学号找到uid，根据user的uid，再根据user的uid找到loginstatus的过期时间，如果过期，且登录成功，更新原来的过期时间，如果没登录成功，不做任何操作
+																									//如果没过期，登陆成功，也要更新数据库和session的时间								
+			LoginStatus loginStatusTemp = userLocalAuthService.getLoginStatusBySchool_no(schoolLogin.getSchool_no());
+			if(loginStatusTemp!=null){
+//				if(loginStatusTemp.getExpiration_time().getTime()>new Date().getTime()){
+//					//说明还没过期
+//				}else{
+//					//说明过期，如果登陆成功则是去更新数据
+//				}
+				//登陆成功之后，不管你是过期还是不过期，我都要去更新数据库的登录状态
+				updateFlag = 1;		//等于1去更新，等于0去保存
+			}
 		}
 		
 		//验证该设备以前是否登陆过
@@ -353,7 +389,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	/**
 	 * 创建一个默认的User用户
 	 */
-	public User createNewUser(){
+	private User createNewUser(){
 		User user = new User();
 //		user.setUid(uid);
 		
@@ -381,12 +417,21 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	
 	
 	
-	
+	/**
+	 * 一个原来的Courses，一个newCourses，把newCourses设置到user里，返回原来的Courses，为什么返回原来的courses，在输出数据之后要把原来的课程放回到schedule表中，这样做是为了保证用户得到的是一个学期的课表
+	 * getCourse
+	 * @Description:
+	 * @Author:肖家豪(作者)
+	 * @Version:v1.00(版本号)
+	 * @Create:Date:2017年4月17日 下午7:22:09
+	 * @return
+	 * @Return:Set<Course>
+	 */
 	
 	private Set<Course> getCourse() {
 		JSONArray cb = requestCourse();		//请求课表
 		
-//		Set<Course> courses = user.getCourses();
+//		Set<Course> pldCourses = user.getCourses();
 		Set<Course> courses = new HashSet<Course>();
 		
 		
@@ -418,7 +463,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			int[] cWeek = format(c_week);		//格式化上课周数
 			
 			StringBuffer sb = new StringBuffer();
-			int j = i;
+			int j = 0;
 			while(cWeek[j]!=0){
 				sb.append(cWeek[j++] + ",");
 			}
@@ -429,22 +474,31 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			
 			
 			try {
-				//在本地数据库查找课程，如果存在则不保存这门课程，如果不存在，则保存这门课程
-				Course courseTemp = courseService.getCourseByPrimarykeys(
-						cid, cd_id, c_year, c_term);
-				if(courseTemp == null){
-					courseService.saveCourse(course);
-				}
+//				//在本地数据库查找课程，如果存在则不保存这门课程，如果不存在，则保存这门课程
+//				Course courseTemp = courseService.getCourseByPrimarykeys(
+//						cid, cd_id, c_year, c_term, c_week, c_lesson, c_time);
+//				if(courseTemp == null){
+////					courseService.saveCourse(course);
+//				}
 				courses.add(course);
 			} catch (Exception e) {
 				System.out.println("保存数据异常");
 			}
 		}
-		user.setCourses(courses);
-		userService.updateUser(user);
-		return user.getCourses();
+		try {
+			copyUser = user;
+			user.getCourses().addAll(courses);
+			copyUser.setCourses(courses);
+			userService.updateUser(user);
+		} catch (Exception e) {
+			System.out.println("更新数据异常");
+		}
+		return copyUser.getCourses();
 	}
 	
+
+
+
 	private JSONArray requestCourse() {
 		HttpUtils httpUtils = new HttpUtils(requestUrl);
 		
@@ -492,6 +546,10 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 //		System.out.println(httpResult2.getResponseBodyString("utf-8"));
 		
 		String jsonString = httpResult2.getResponseBodyString("utf-8");
+		
+		System.out.println("---------------------------------课表信息（开始）---------------------------");
+		System.out.println(jsonString);
+		System.out.println("---------------------------------课表信息（结束）---------------------------");
 		
 		JSONObject json = JSONObject.fromObject(jsonString);
 		
@@ -574,4 +632,14 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		}
 		return resultInt;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

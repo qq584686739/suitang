@@ -18,7 +18,7 @@
 		<!-- 
 			table第三张表
 		-->
-		<set name="courses" table="schedule" lazy="false">
+		<set name="courses" table="schedule" lazy="false" cascade="save-update">
 			<key>
 			<!-- 
 				外键
@@ -35,6 +35,9 @@
 				<column name="cd_id" ></column>
 				<column name="c_year" ></column>
 				<column name="c_term" ></column>
+				<column name="c_week" ></column>
+				<column name="c_lesson" ></column>
+				<column name="c_time" ></column>
 				
 			</many-to-many>
 		</set>

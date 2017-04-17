@@ -111,6 +111,62 @@
     <option value="16">3</option>			第3学期
 		
 		
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+登录：
+	接口：http://139.129.11.18:8090/suitang/schoolLogin_login.action
+	提交方式：POST
+
+   	需要的参数：
+   		学号：		school_no（必须）
+   		密码：		password（必须）
+   		学年：		xnm（非必须）
+   		学期：		xqm（非必须）
+   		设备名称：	device_name（非必须）
+   		设备ID：	device_id（必须）
+
+	Return：
+		登陆成功：
+			status:success
+			data:
+				user信息表，课程表，
+			在响应头里放了token
+		登录失败：
+			1、无学号登录失败：		message:对不起，用学号不能为空!    			status:error
+			1、无密码登录失败：		message:对不起，密码不能为空!   			status:error
+			1、无设备ID登录失败：		message:对不起，设备ID不能为空！    			status:error
+			1、学号密码错误登录失败：	message:对不起，用户名或密码错误！   			status:error
+			1、切换用户登录失败：		message:对不起，该设备90分钟之内只允许一个学生登录!   	status:error
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 		
 
 	

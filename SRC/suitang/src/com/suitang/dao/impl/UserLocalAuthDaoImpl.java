@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import com.suitang.dao.UserLocalAuthDao;
+import com.suitang.domain.LoginStatus;
 import com.suitang.domain.User;
 import com.suitang.domain.UserOtherAuths;
 import com.suitang.domain.UserLocalAuths;
@@ -30,6 +31,29 @@ public class UserLocalAuthDaoImpl extends BaseDaoImpl<UserLocalAuths> implements
 				+ "ula.school_no = '" + school_no + "' )";
 		Query query = session.createQuery(hql);
 		List<User> list = query.list();
+		
+		session.close();
+		
+		if(list!=null && list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
+
+	
+	public LoginStatus getLoginStatusBySchool_no(String school_no) {
+		SessionFactory sessionFactory = 
+				this.getHibernateTemplate().getSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		String hql = "FROM LoginStatus ls WHERE ls.uid In ( "
+				+ "SELECT ula.uid "
+				+ "FROM "
+				+ "UserLocalAuths ula "
+				+ "WHERE 1=1 AND "
+				+ "ula.school_no = '" + school_no + "' )";
+		Query query = session.createQuery(hql);
+		List<LoginStatus> list = query.list();
 		
 		session.close();
 		

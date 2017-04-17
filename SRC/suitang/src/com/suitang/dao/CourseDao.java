@@ -26,6 +26,8 @@ public interface CourseDao extends BaseDao<Course>{
 			String cid,
 			String cd_id,
 			int c_year,
-			int c_term);
-	
+			int c_term,
+			String c_week,
+			String c_lesson,
+			String c_time);
 }

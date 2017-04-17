@@ -53,5 +53,6 @@ public interface CourseService {
 	 * @return
 	 * @Return:Course
 	 */
-	public Course getCourseByPrimarykeys(String cid, String cd_id, int c_year,int c_term);
+	public Course getCourseByPrimarykeys(String cid, String cd_id, int c_year,int c_term,
+			String c_week, String c_lesson, String c_time);
 }
