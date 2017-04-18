@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User implements Serializable{
-	private int uid; // 用户ID
+	private Integer uid; // 用户ID
 	private String nickname; // 用户昵称
 	private String avatar; // 用户头像
 	private Integer sex; // 性别0：男生 1：女生
@@ -30,11 +30,11 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
@@ -70,4 +70,32 @@ public class User implements Serializable{
 		this.rank = rank;
 	}
 
+//	@Override
+//	public boolean equals(Object obj) {
+//		if(obj == null) return false;  
+//        if(this == obj) return true;  
+//        if(obj instanceof User){   
+//            User user =(User)obj;  
+////	          if(user.id = this.id) return true; // 只比较id  
+//            // 比较id和username 一致时才返回true 之后再去比较 hashCode  
+//            if(user.uid == this.uid
+//            		&& user.nickname.equals(this.nickname)
+//            		&& user.avatar.equals(this.avatar)
+//            		&& user.sex == this.sex
+//            		&& user.email.equals(this.email)
+//            		&& user.rank == this.rank) return true;  
+//            }  
+//        return false;  
+//	}
+//	
+//
+//	@Override
+//	public int hashCode() {
+//		 return uid.hashCode() 
+//				 * nickname.hashCode()
+//				 * avatar.hashCode()
+//				 * sex.hashCode()
+//				 * email.hashCode()
+//				 * rank.hashCode();
+//	}
 }

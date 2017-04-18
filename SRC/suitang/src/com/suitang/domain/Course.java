@@ -117,4 +117,35 @@ public class Course implements Serializable {
 				+ c_year + ", c_term=" + c_term + ", c_week=" + c_week
 				+ ", c_lesson=" + c_lesson + ", c_time=" + c_time + "]";
 	}
+
+	
+	//覆写equals和hashcode方法
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;  
+		if(this == obj) return true;  
+		if(obj instanceof Course){   
+			Course course =(Course)obj;  
+				if(course.cid.equals(this.cid)
+					&& course.cd_id.equals(this.cd_id)
+		      		&& course.cd_id.equals(this.cd_id)
+		      		&& course.c_year == this.c_year
+		      		&& course.c_term == this.c_term
+		      		&& course.c_week.equals(this.c_week)
+		      		&& course.c_lesson.equals(this.c_lesson)
+		      		&& course.c_time.equals(this.c_time)) return true;  
+		}  
+		return false;  
+	}
+
+	@Override
+	public int hashCode() {
+		 return cid.hashCode() 
+				* cd_id.hashCode()
+				* c_year
+				* c_term
+				* c_week.hashCode()
+				* c_lesson.hashCode()
+		 		* c_time.hashCode();
+	}
 }

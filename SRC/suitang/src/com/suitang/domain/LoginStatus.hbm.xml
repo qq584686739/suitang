@@ -9,6 +9,11 @@
 			<generator class="assigned"></generator>
 		</id>
 		<property name="uid" type="int" column="uid"></property>
-		<property name="expiration_time" type="timestamp" column="expiration_time"></property>
+		
+		<property name="expiration_time" 
+			type="timestamp" 
+			column="expiration_time" 
+			update="true"
+			insert="true"></property>
 	</class>
 </hibernate-mapping>

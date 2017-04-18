@@ -116,7 +116,7 @@ public class CourseAction extends BaseAction<CourseLogin>{
 			
 			//更新数据库的状态
 			LoginStatus loginStatus = loginStatusService.getLoginStatusByLoginId(courseLogin.getToken());
-			loginStatus.setExpiration_time(Secret.expiration_time);	//重新设置过期时间
+			loginStatus.setExpiration_time(Secret.EXPIRATION_TIME);	//重新设置过期时间
 			
 			
 			//更新session状态

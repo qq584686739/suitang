@@ -34,6 +34,7 @@ import com.suitang.service.LoginStatusService;
 import com.suitang.service.UserLocalAuthService;
 import com.suitang.service.UserLoginRecordService;
 import com.suitang.service.UserService;
+import com.suitang.utils.ErrorInfo;
 import com.suitang.utils.HttpUtils;
 import com.suitang.utils.ValidateUtil;
 import com.suitang.utils.HttpUtils.HttpResult;
@@ -69,8 +70,8 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	@Resource
 	private CourseService courseService;
 	
-	//如果是0则没有错，1：用户名为空，2：密码不能为空 ,3：学年不能为空
-	//4：学期不能为空 6：设备ID不能为空 7:用户名密码错误
+	//如果是0则没有错，1：用户名为空，2：密码不能为空 ,
+	// 6：设备ID不能为空 7:用户名密码错误
 	private int errorInfo = 0;		
 	
 	/**
@@ -93,8 +94,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	
 	/**初始化数据*/
 	static{
-		jsonObject.put("status", "error");
-		jsonObject.put("message", "服务器忙");
+		jsonObject.put("status", ErrorInfo.NOT_FIND);
 		jsonObject.put("data", "");
 	}
 	
@@ -111,33 +111,29 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		
 		
 		if(errorInfo == 1){
-			//用户名不能为空
-			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，用学号不能为空!");
+			//学号不能为空
+			jsonObject.put("status", ErrorInfo.LOGIN_NOT_FIND_SCHOOL_NO);
 			jsonObject.put("data", "");
 			out.write(jsonObject.toString());
 			out.close();
 			return ;
 		}else if(errorInfo == 2){
 			//密码不能为空
-			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，密码不能为空!");
+			jsonObject.put("status", ErrorInfo.LOGIN_NOT_FIND_PASSWORD);
 			jsonObject.put("data", "");
 			out.write(jsonObject.toString());
 			out.close();
 			return ;
 		}else if(errorInfo == 6){
 			//设备ID不能为空
-			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，设备ID不能为空！");
+			jsonObject.put("status", ErrorInfo.LOGIN_NOT_FIND_DEVICE_ID);
 			jsonObject.put("data", "");
 			out.write(jsonObject.toString());
 			out.close();
 			return ;
 		}else if(errorInfo == 7){
 			//用户名或密码错误
-			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，用户名或密码错误！");
+			jsonObject.put("status", ErrorInfo.LOGIN_SCHOOL_NO_OR_PASSWORD_ERROR);
 			jsonObject.put("data", "");
 			out.write(jsonObject.toString());
 			out.close();
@@ -161,7 +157,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 				uuidString = UUID.randomUUID().toString();					//生成uuid
 				loginStatusTemp.setLogin_id(uuidString);						//设置uuid
 			}
-			loginStatusTemp.setExpiration_time(Secret.expiration_time);		//设置过期时间
+			loginStatusTemp.setExpiration_time(Secret.EXPIRATION_TIME);		//设置过期时间
 			
 			if(updateFlag == 1){
 				//更新
@@ -199,14 +195,13 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 //			jsonObject.put("data", jsonObjectTemp);
 			jsonObject.put("data", copyUser);
 			
-			jsonObject.put("status", "success");
+			jsonObject.put("status", 1);
 			jsonObject.put("message", "");
 			response.setHeader("token", uuidString);			//把token放到响应头里
 //			jsonObject.put("token", uuidString);
 			
 		}else{					//不允许登陆
-			jsonObject.put("status", "error");
-			jsonObject.put("message", "对不起，该设备90分钟之内只允许一个学生登录!");
+			jsonObject.put("status", ErrorInfo.LOGIN_CHANGE);
 			jsonObject.put("data", "");
 		}
 		
@@ -432,7 +427,12 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		JSONArray cb = requestCourse();		//请求课表
 		
 //		Set<Course> pldCourses = user.getCourses();
-		Set<Course> courses = new HashSet<Course>();
+		Set<Course> userCourses = user.getCourses();
+		
+		int isOverride = 0;	
+		
+		/**这个用来放数据库没有的课程*/
+		Set<Course> newCourses = new HashSet<Course>();
 		
 		
 		for(int i=0;i<cb.size();i++){
@@ -444,9 +444,9 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			String cid = (String) jsonObject.get("jxbmc");					//获得课程id
 			String c_name = (String) jsonObject.get("kcmc");				//获得课程名字
 			String c_teacher = (String) jsonObject.get("xm");				//获得任课老师姓名
-			int c_year = Integer.valueOf((String)jsonObject.get("xnm"));					//获得学年
+			int c_year = Integer.valueOf((String)jsonObject.get("xnm"));	//获得学年
 			String c_time = (String) jsonObject.get("xqj");					//获得星期几
-			int c_term = Integer.valueOf((String)jsonObject.get("xqm"));					//获得学期
+			int c_term = Integer.valueOf((String)jsonObject.get("xqm"));	//获得学期
 			String c_week = (String) jsonObject.get("zcd");					//获得上课周数
 			
 			Course course = new Course();
@@ -474,22 +474,29 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			
 			
 			try {
-//				//在本地数据库查找课程，如果存在则不保存这门课程，如果不存在，则保存这门课程
-//				Course courseTemp = courseService.getCourseByPrimarykeys(
-//						cid, cd_id, c_year, c_term, c_week, c_lesson, c_time);
-//				if(courseTemp == null){
-////					courseService.saveCourse(course);
-//				}
-				courses.add(course);
+				if(!userCourses.contains(course)){
+					//在数据库没找到课程
+					isOverride = 1;			//标记一下
+					userCourses.add(course);		//把课程放到数据库里
+				}
+				newCourses.add(course);		//不管在数据库找到或者没找到课程都要放到返回的课程信息里
 			} catch (Exception e) {
 				System.out.println("保存数据异常");
 			}
 		}
 		try {
-			copyUser = user;
-			user.getCourses().addAll(courses);
-			copyUser.setCourses(courses);
-			userService.updateUser(user);
+			copyUser = new User();
+			copyUser.setUid(user.getUid());
+			copyUser.setSex(user.getSex());
+			copyUser.setRank(user.getRank());
+			copyUser.setNickname(user.getNickname());
+			copyUser.setEmail(user.getEmail());
+			copyUser.setAvatar(user.getAvatar());
+			
+			if(isOverride==1){
+				userService.updateUser(user);		//更新user课程表
+			}
+			copyUser.setCourses(newCourses);
 		} catch (Exception e) {
 			System.out.println("更新数据异常");
 		}
