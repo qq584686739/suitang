@@ -85,7 +85,7 @@ public class LoginAction extends BaseAction<Login>{
 			loginStatus.setUid(user.getUid());							//对应的userid
 			String uuidString = UUID.randomUUID().toString();			//生成uuid
 			loginStatus.setLogin_id(UUID.randomUUID().toString());		//生成uuid
-			loginStatus.setExpiration_time(Secret.EXPIRATION_TIME);			//设置过期时间
+			loginStatus.setExpiration_time(new Secret().EXPIRATION_TIME);			//设置过期时间
 			loginStatusService.saveLoginStatus(loginStatus);
 			
 			/**获得session*/

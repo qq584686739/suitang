@@ -50,6 +50,17 @@
 			<result name="error">/error.jsp</result>
 			<result name="input">/login.jsp</result>
 		</action>
+		
+		
+		
+		<action name="signRequest" class="com.suitang.action.SignAction" method="signRequest">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		
+		
+		
 	</package>
 
 </struts>

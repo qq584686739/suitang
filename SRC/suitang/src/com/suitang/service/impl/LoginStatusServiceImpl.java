@@ -35,4 +35,9 @@ public class LoginStatusServiceImpl implements LoginStatusService{
 		return loginStatusDao.getTById(LoginId);
 	}
 
+	@Override
+	public User getUserByLoginId(String token) {
+		return loginStatusDao.getUserByLoginId(token);
+	}
+
 }

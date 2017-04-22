@@ -130,23 +130,41 @@
 
 	Return：
 		登陆成功：
-			status:0
+			status:1
 			data:
 				user信息表，课程表，
 			在响应头里放了token
 		登录失败：
-			1、无学号登录失败：			message:对不起，用学号不能为空!    			status:1
-			1、无密码登录失败：			message:对不起，密码不能为空!   			status:2
-			1、无设备ID登录失败：			message:对不起，设备ID不能为空！    			status:3
-			1、学号密码错误登录失败：		message:对不起，用户名或密码错误！   			status:4
-			1、切换用户登录失败(未满足90分钟)：	message:对不起，该设备90分钟之内只允许一个学生登录!   	status:5
+			1、无学号登录失败：			message:对不起，用学号不能为空!    			status:1001
+			1、无密码登录失败：			message:对不起，密码不能为空!   			status:1002
+			1、无设备ID登录失败：			message:对不起，设备ID不能为空！    			status:1003
+			1、学号密码错误登录失败：		message:对不起，用户名或密码错误！   			status:1004
+			1、切换用户登录失败(未满足90分钟)：	message:对不起，该设备90分钟之内只允许一个学生登录!   	status:1005
 
 
-
-
-
-
-
+----------------------------------------------------------------------------
+签到：
+	接口：http://139.129.11.18:8090/suitang/signRequest.action
+		第一次请求携带参数：	请求头的token
+					cid
+					cd_id
+					c_year
+					c_term
+					c_week
+					c_lesson
+					c_time
+		返回：该次请求的唯一sign_token（有效时长五分钟）
+		
+		往后请求携带参数：	请求头中的token
+					cid
+					cd_id
+					c_year
+					c_term
+					c_week
+					c_lesson
+					c_time
+					sign_token
+		返回新的sign_token（有效时长五分钟）
 
 
 

@@ -7,29 +7,23 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import com.suitang.dao.LoginStatusDao;
-import com.suitang.dao.UserDao;
-import com.suitang.domain.LoginStatus;
+import com.suitang.dao.SignDao;
+import com.suitang.domain.Sign;
 import com.suitang.domain.User;
-import com.suitang.domain.UserOtherAuths;
 
-@Repository(value="loginStatusDao")
-public class LoginStatusDaoImpl extends BaseDaoImpl<LoginStatus> implements LoginStatusDao{
+@Repository(value="signDao")
+public class SignDaoImpl extends BaseDaoImpl<Sign> implements SignDao{
 	//用来实现除了增删改查的其他方法
 
 	@Override
-	public User getUserByLoginId(String token) {
+	public Sign findSignBySign_token(String sign_token) {
 		SessionFactory sessionFactory = 
 				this.getHibernateTemplate().getSessionFactory();
 		Session session = sessionFactory.openSession();
-		String hql = "FROM User u WHERE u.uid In ( "
-				+ "SELECT ls.uid "
-				+ "FROM "
-				+ "LoginStatus ls "
-				+ "WHERE 1=1 AND "
-				+ "ls.login_id = '" + token + "' )";
+		
+		String hql = "FROM Sign s WHERE s.sign_token = '" + sign_token + "' )";
 		Query query = session.createQuery(hql);
-		List<User> list = query.list();
+		List<Sign> list = query.list();
 		
 		session.close();
 		

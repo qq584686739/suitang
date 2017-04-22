@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.suitang.domain.Sign" table="sign">
+		<id name="sign_id" type="int" column="sign_id">
+			<generator class="identity"></generator>
+		</id>
+		<property name="uid" type="int" column="uid"></property>
+		<property name="cid" type="string" column="cid"></property>
+		<property name="cd_id" type="string" column="cd_id"></property>
+		<property name="c_year" type="int" column="c_year"></property>
+		<property name="c_term" type="int" column="c_term"></property>
+		<property name="c_week" type="string" column="c_week"></property>
+		<property name="c_lesson" type="string" column="c_lesson"></property>
+		<property name="c_time" type="string" column="c_time"></property>
+		<property name="sign_time" type="long" column="sign_time"></property>
+		<property name="sign_token" type="string" column="sign_token"></property>
+		<property name="invalid_time" type="long" column="invalid_time"></property>
+	</class>
+</hibernate-mapping>

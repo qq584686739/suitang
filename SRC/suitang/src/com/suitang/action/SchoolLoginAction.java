@@ -74,6 +74,9 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	// 6：设备ID不能为空 7:用户名密码错误
 	private int errorInfo = 0;		
 	
+	/**判断是否出错，0：无错，1：出错*/
+	private int error = 0;
+	
 	/**
 	 * 登录标识
 	 * false:不允许登录
@@ -86,11 +89,13 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	
 	private User copyUser;
 	
-	/**如果登陆成功，且updateFlag=1，则是去更新数据库的状态，如果updateFlag=0，则是去创建数据库的状态*/
-	private int updateFlag = 0;		
-	
 	/**登录返回的json格式数据*/
 	private static  JSONObject jsonObject = new JSONObject();
+	
+	/**如果数据库存在该用户的登录记录，则loginStatusTemp不等于null，去更新数据库的登录状态
+	 * 如果数据库不存在该用户的登录记录，则loginStatusTemp等于null，去创建数据库的登录状态
+	 * */
+	private LoginStatus loginStatusTemp = null;
 	
 	/**初始化数据*/
 	static{
@@ -110,30 +115,8 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		}
 		
 		
-		if(errorInfo == 1){
-			//学号不能为空
-			jsonObject.put("status", ErrorInfo.LOGIN_NOT_FIND_SCHOOL_NO);
-			jsonObject.put("data", "");
-			out.write(jsonObject.toString());
-			out.close();
-			return ;
-		}else if(errorInfo == 2){
-			//密码不能为空
-			jsonObject.put("status", ErrorInfo.LOGIN_NOT_FIND_PASSWORD);
-			jsonObject.put("data", "");
-			out.write(jsonObject.toString());
-			out.close();
-			return ;
-		}else if(errorInfo == 6){
-			//设备ID不能为空
-			jsonObject.put("status", ErrorInfo.LOGIN_NOT_FIND_DEVICE_ID);
-			jsonObject.put("data", "");
-			out.write(jsonObject.toString());
-			out.close();
-			return ;
-		}else if(errorInfo == 7){
-			//用户名或密码错误
-			jsonObject.put("status", ErrorInfo.LOGIN_SCHOOL_NO_OR_PASSWORD_ERROR);
+		if(error == 1){
+			jsonObject.put("status", errorInfo);
 			jsonObject.put("data", "");
 			out.write(jsonObject.toString());
 			out.close();
@@ -145,27 +128,20 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		if(login_flag){			//允许登录
 			
 			String uuidString = null;
-			LoginStatus loginStatusTemp = null;
-			if(updateFlag == 1){
-				//去更新状态
-				loginStatusTemp = userLocalAuthService.getLoginStatusBySchool_no(schoolLogin.getSchool_no());
-			}else{
+			if(loginStatusTemp == null){
 				//去保存状态
 				/**保存数据库的登录状态*/
 				loginStatusTemp = new LoginStatus();
 				loginStatusTemp.setUid(user.getUid());							//对应的userid
 				uuidString = UUID.randomUUID().toString();					//生成uuid
 				loginStatusTemp.setLogin_id(uuidString);						//设置uuid
-			}
-			loginStatusTemp.setExpiration_time(Secret.EXPIRATION_TIME);		//设置过期时间
-			
-			if(updateFlag == 1){
-				//更新
-				loginStatusService.updateLoginStatus(loginStatusTemp);
-				uuidString = loginStatusTemp.getLogin_id();
-			}else{
-				//保存
+				loginStatusTemp.setExpiration_time(new Secret().EXPIRATION_TIME);		//设置过期时间
 				loginStatusService.saveLoginStatus(loginStatusTemp);
+			}else{
+				//去更新状态
+				loginStatusTemp.setExpiration_time(new Secret().EXPIRATION_TIME);		//设置过期时间
+				uuidString = loginStatusTemp.getLogin_id();
+				loginStatusService.updateLoginStatus(loginStatusTemp);
 			}
 			
 			
@@ -215,11 +191,13 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	public void validate() {
 		
 		if(schoolLogin.getSchool_no() == null || schoolLogin.getSchool_no().equals("")){
-			errorInfo = 1;
+			errorInfo = ErrorInfo.LOGIN_NOT_FIND_SCHOOL_NO;
+			error = 1;
 			return ;
 		}
 		if(schoolLogin.getPassword() == null || schoolLogin.getPassword().equals("")){
-			errorInfo = 2;
+			errorInfo = ErrorInfo.LOGIN_NOT_FIND_PASSWORD;
+			error = 1;
 			return ;
 		}
 		if(schoolLogin.getXnm()==null || schoolLogin.getXnm().equals("")){
@@ -259,14 +237,16 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			}
 		}
 		if(schoolLogin.getDevice_id()==null || schoolLogin.getDevice_id().equals("")){
-			errorInfo = 6;
+			errorInfo = ErrorInfo.LOGIN_NOT_FIND_DEVICE_ID;
+			error = 1;
 			return ;
 		}
 		
 		//验证用户名和密码
 		int loginFlag = loginValidate(schoolLogin.getSchool_no(),schoolLogin.getPassword());
 		if(loginFlag == 0){
-			errorInfo = 7;
+			errorInfo = ErrorInfo.LOGIN_SCHOOL_NO_OR_PASSWORD_ERROR;
+			error = 1;
 			return ;
 		}
 		
@@ -285,16 +265,16 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			//数据库原来存在该用户
 			//这里应该加一些代码：根据学号找到uid，根据user的uid，再根据user的uid找到loginstatus的过期时间，如果过期，且登录成功，更新原来的过期时间，如果没登录成功，不做任何操作
 																									//如果没过期，登陆成功，也要更新数据库和session的时间								
-			LoginStatus loginStatusTemp = userLocalAuthService.getLoginStatusBySchool_no(schoolLogin.getSchool_no());
-			if(loginStatusTemp!=null){
-//				if(loginStatusTemp.getExpiration_time().getTime()>new Date().getTime()){
-//					//说明还没过期
-//				}else{
-//					//说明过期，如果登陆成功则是去更新数据
-//				}
-				//登陆成功之后，不管你是过期还是不过期，我都要去更新数据库的登录状态
-				updateFlag = 1;		//等于1去更新，等于0去保存
-			}
+			loginStatusTemp = userLocalAuthService.getLoginStatusBySchool_no(schoolLogin.getSchool_no());
+//			if(loginStatusTemp!=null){
+////				if(loginStatusTemp.getExpiration_time().getTime()>new Date().getTime()){
+////					//说明还没过期
+////				}else{
+////					//说明过期，如果登陆成功则是去更新数据
+////				}
+//				//登陆成功之后，不管你是过期还是不过期，我都要去更新数据库的登录状态
+//				updateFlag = 1;		//等于1去更新，等于0去保存
+//			}
 		}
 		
 		//验证该设备以前是否登陆过
@@ -390,7 +370,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		
 		user.setNickname(schoolLogin.getSchool_no());		//以学号为默认昵称
 		
-		user.setAvatar("这是默认头像url");			//设置一个默认头像url
+		user.setAvatar("img/user.png");			//设置一个默认头像url
 		
 		user.setSex(0);								//设置默认的性别
 		
@@ -449,6 +429,9 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			int c_term = Integer.valueOf((String)jsonObject.get("xqm"));	//获得学期
 			String c_week = (String) jsonObject.get("zcd");					//获得上课周数
 			
+			//格式化上课节数
+			c_lesson = formatLesson(c_lesson);
+			
 			Course course = new Course();
 			course.setCd_id(cd_id);
 			course.setCd_mc(cd_mc);
@@ -504,6 +487,22 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	}
 	
 
+
+
+	private String formatLesson(String c_lesson) {
+		StringBuffer resultBuffer = new StringBuffer();
+		String[] s = c_lesson.split("-");
+		String string1 = s[0];
+		String string2 = s[1];
+		string2 = string2.substring(0, string2.length()-1);
+		int i = Integer.valueOf(string1);
+		for(;i<=Integer.valueOf(string2);i++){
+			resultBuffer.append(i);
+			resultBuffer.append(",");
+		}
+		resultBuffer.deleteCharAt(resultBuffer.length()-1);			//删除最后一个逗号
+		return resultBuffer.toString();
+	}
 
 
 	private JSONArray requestCourse() {
@@ -639,14 +638,4 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		}
 		return resultInt;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
