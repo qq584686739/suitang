@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.aspectj.org.eclipse.jdt.core.IField;
 import org.junit.Test;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,6 @@ import com.suitang.domain.LoginStatus;
 import com.suitang.domain.User;
 import com.suitang.service.CourseService;
 import com.suitang.service.LoginStatusService;
-import com.suitang.service.UserLocalAuthService;
 import com.suitang.service.UserOtherAuthsService;
 import com.suitang.service.UserService;
 import com.suitang.utils.DESUtils;
@@ -34,9 +32,6 @@ import com.suitang.utils.DESUtils;
 import com.suitang.utils.HttpUtils;
 import com.suitang.utils.Secret;
 import com.suitang.utils.HttpUtils.HttpResult;
-
-import freemarker.core.ReturnInstruction.Return;
-
 
 @SuppressWarnings("serial")
 @Controller("courseAction")
@@ -356,11 +351,5 @@ public class CourseAction extends BaseAction<CourseLogin>{
 				signin = 4;
 			}
 		}
-	}
-	
-	@Test
-	public void f(){
-		System.out.println(DESUtils.encrypt("13150227", Secret.KEY));
-		
 	}
 }
