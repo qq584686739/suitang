@@ -23,7 +23,7 @@
 	<!-- binary -->
 	<!-- latin1 -->
 	<property name="hibernate.connection.url">
-		jdbc:mysql://139.129.11.18:3306/suitang?useUnicode=true&amp;characterEncoding=utf8
+		jdbc:mysql://139.129.11.18:3306/suitang?useUnicode=true&amp;autoReconnect=true&amp;characterEncoding=utf8
 	</property>
 	<!-- ?useUnicode=true          ;autoReconnect=true -->
 	<property name="hibernate.connection.username">suitang</property>
