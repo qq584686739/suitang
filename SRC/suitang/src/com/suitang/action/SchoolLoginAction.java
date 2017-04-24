@@ -149,7 +149,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			HttpSession session = request.getSession();
 			/**把加密过后的学号当键值， 把0和1当value。0：未登录。1：已登录*/
 			/**login.getIdentifier()是学号进行加密后的数据*/
-			session.setAttribute(uuidString, 1);	//把秘钥放到session里
+			session.setAttribute(uuidString, "1");	//把秘钥放到session里
 			session.setMaxInactiveInterval(Secret.SESSION_TIME);	//设置session的默认时间
 			
 			System.out.println("uuidString = " + uuidString);

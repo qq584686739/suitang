@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.suitang.domain.SignHistory" table="sign_history">
+		<composite-id>
+            <key-property name="uid" type="java.lang.Integer" column="uid" />
+            <key-property name="sign_id" type="java.lang.Integer" column="sign_id" />
+        </composite-id>
+	
+		<property name="sign_time" type="java.lang.Long" column="sign_time"></property>
+		<property name="sign_late" type="java.lang.Integer" column="sign_late"></property>
+		<property name="late_reason" type="string" column="late_reason"></property>
+		<property name="late_state" type="java.lang.Integer" column="late_state"></property>
+	</class>
+</hibernate-mapping>

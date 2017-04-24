@@ -16,6 +16,21 @@
 	
 	<!-- 系统管理 -->
 	<package name="suitang" namespace="" extends="struts-default">
+	
+        <interceptors>
+            <!-- 定义一个拦截器栈 -->
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="loginInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+            <interceptor name="loginInterceptor" class="com.suitang.interceptors.LoginInterceptor"></interceptor>
+        </interceptors>
+ 
+        <!-- 定义默认拦截器 -->
+        <!-- <default-interceptor-ref name="mydefault" /> -->
+	
+	
+	
 		<!-- 测试 -->
 		<action name="user_*" class="userLocalAuthAction" method="{1}">
 			<result name="save">/success.jsp</result>
@@ -54,6 +69,20 @@
 		
 		
 		<action name="signRequest" class="com.suitang.action.SignAction" method="signRequest">
+		
+			<interceptor-ref name="mydefault"></interceptor-ref>
+			
+			<result name="schoolLogin">/schoolLogin.jsp</result>
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		
+		<action name="studentAction_*" class="com.suitang.action.StudentAction" method="{1}">
+		
+			<interceptor-ref name="mydefault"></interceptor-ref>
+			
+			<result name="schoolLogin">/schoolLogin.jsp</result>
 			<result name="success">/success.jsp</result>
 			<result name="error">/error.jsp</result>
 			<result name="input">/login.jsp</result>

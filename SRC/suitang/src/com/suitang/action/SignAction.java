@@ -80,8 +80,6 @@ public class SignAction extends BaseAction<Sign>{
 
 			signService.saveSign(sign);
 			
-			
-			
 		}else{
 			//后续发起请求（签到请求）
 			
@@ -125,34 +123,6 @@ public class SignAction extends BaseAction<Sign>{
 
 	@Override
 	public void validate() {
-		//先判断登录标识token(身份标识)是否有效(判断时间是否过期)
-		String token = request.getHeader("token");
-		
-		if(token == null){
-			//该用户没有携带token
-			error = ErrorInfo.REQUESTHEAD_NOT_FIND_TOKEN;
-			return;
-		}
-		
-		//根据token找到user
-		User user = loginStatusService.getUserByLoginId(token);
-		
-		if(user == null){
-			//说明token不存在
-			error = ErrorInfo.SQL_NOT_FIND_TOKEN;
-			return ;
-		}
-		
-		
-		//说明token存在,去检查token是否过期
-		//找到过期时间，然后检查是否过期
-		LoginStatus loginStatus = loginStatusService.getLoginStatusByLoginId(token);
-		Timestamp timestamp = loginStatus.getExpiration_time();
-		if(timestamp.getTime()<new Date().getTime()){
-			//过期，不合法
-			error = ErrorInfo.TOKEN_EXPIRE;
-			return ;
-		}
 		
 		/**获得课程的七个主键*/
 		String cid = sign.getCid();
@@ -186,7 +156,9 @@ public class SignAction extends BaseAction<Sign>{
 		}
 		
 		//token未过期，合法
-		sign.setUid(user.getUid());
+		sign.setUid(
+				loginStatusService.getLoginStatusByLoginId(
+						request.getHeader("token")).getUid());
 		
 		super.validate();
 	}

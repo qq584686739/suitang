@@ -50,6 +50,7 @@
 	<mapping resource="com/suitang/domain/Course.hbm.xml" />
 	<mapping resource="com/suitang/domain/UserLocalAuths.hbm.xml" />
 	<mapping resource="com/suitang/domain/Sign.hbm.xml" />
+	<mapping resource="com/suitang/domain/SignHistory.hbm.xml" />
 
 
 </session-factory>

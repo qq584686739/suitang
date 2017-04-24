@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.junit.Test;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -42,9 +41,6 @@ public class CourseAction extends BaseAction<CourseLogin>{
 	
 	/**获得模型驱动*/
 	private CourseLogin courseLogin = this.getModel();
-	
-	/**正确或错误标识*/
-	private String validateString = "error";
 	
 	/**返回的json格式数据*/
 	JSONObject jsonObject = new JSONObject();
@@ -116,7 +112,7 @@ public class CourseAction extends BaseAction<CourseLogin>{
 			
 			//更新session状态
 			HttpSession session = request.getSession();
-			session.setAttribute(loginStatus.getLogin_id(), 1);
+			session.setAttribute(loginStatus.getLogin_id(), "1");
 			session.setMaxInactiveInterval(Secret.SESSION_TIME);	//设置session的默认时间
 			
 			
@@ -215,7 +211,7 @@ public class CourseAction extends BaseAction<CourseLogin>{
 		httpUtils.setRequestMethod("POST");
 		
 		/**设置请求参数*/
-		Map requestProperty = new HashMap();
+		Map<String, String> requestProperty = new HashMap<String, String>();
 		requestProperty.put("yhm", courseLogin.getId());
 		requestProperty.put("mm", courseLogin.getPsw());
 		requestProperty.put("yzm", "");
@@ -236,7 +232,7 @@ public class CourseAction extends BaseAction<CourseLogin>{
 		httpUtils.setRequestUrl(requestUrl2);
 		
 		/**设置cookie,设置响应头*/
-		Map headProperty = new HashMap();
+		Map<String, String> headProperty = new HashMap<String, String>();
 		headProperty.put("Cookie", cookie);
 		httpUtils.setHeadProperty(headProperty);
 		
@@ -330,7 +326,7 @@ public class CourseAction extends BaseAction<CourseLogin>{
 		//首先判断是否登录
 		HttpSession session = request.getSession();
 		String token = courseLogin.getToken();
-		int log = (Integer) session.getAttribute(token);
+		int log = Integer.valueOf((String) session.getAttribute(token));
 		
 		if(log==1){
 			//已经登录 在session中

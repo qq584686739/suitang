@@ -22,10 +22,10 @@ public class ErrorInfo {
 	/**请求头无token，说明该用户没有携带token，请重新登陆后再访问*/
 	public static final int REQUESTHEAD_NOT_FIND_TOKEN = 2001;
 	
-	/**数据库无该token*/
+	/**数据库无该token，请登陆后重新访问*/
 	public static final int SQL_NOT_FIND_TOKEN = 2002;
 	
-	/**token已过期*/
+	/**token存在，但是token已过期，请重新登录*/
 	public static final int TOKEN_EXPIRE = 2003;
 	
 	/**数据库不存在sign_token，请刷新重试*/
@@ -37,6 +37,12 @@ public class ErrorInfo {
 	/**传入的课程数据查不到该课程*/
 	public static final int NOT_FIND_COURSE = 2006;
 	
-	/**该sign_token已经过期无法使用，请刷新后重试*/
+	/**数据库存在该sign_token，但是已经过期无法使用，请刷新后重试*/
 	public static final int SIGN_TOKEN_EXPIRE = 2007;
+	
+	/**学生签到没有携带sign_token*/
+	public static final int SIGN_TOKEN_ERROR = 3001;
+	
+	/**你已经签到成功，请勿连续签到*/
+	public static final int STUDENT_SIGN_MANY_TIMES = 3002;
 }
