@@ -459,7 +459,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			try {
 				if(!userCourses.contains(course)){
 					//在数据库没找到课程
-					isOverride = 1;			//标记一下
+					isOverride = 1;					//标记一下
 					userCourses.add(course);		//把课程放到数据库里
 				}
 				newCourses.add(course);		//不管在数据库找到或者没找到课程都要放到返回的课程信息里
@@ -475,20 +475,17 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			copyUser.setNickname(user.getNickname());
 			copyUser.setEmail(user.getEmail());
 			copyUser.setAvatar(user.getAvatar());
+			copyUser.setCourses(newCourses);
 			
 			if(isOverride==1){
 				userService.updateUser(user);		//更新user课程表
 			}
-			copyUser.setCourses(newCourses);
 		} catch (Exception e) {
 			System.out.println("更新数据异常");
 		}
 		return copyUser.getCourses();
 	}
 	
-
-
-
 	private String formatLesson(String c_lesson) {
 		StringBuffer resultBuffer = new StringBuffer();
 		String[] s = c_lesson.split("-");

@@ -40,9 +40,16 @@ public class ErrorInfo {
 	/**数据库存在该sign_token，但是已经过期无法使用，请刷新后重试*/
 	public static final int SIGN_TOKEN_EXPIRE = 2007;
 	
+	/**一个人同时发起签到和请求签到*/
+	public static final int REQUESTSIGN_AND_SIGN = 2008;
+	
 	/**学生签到没有携带sign_token*/
 	public static final int SIGN_TOKEN_ERROR = 3001;
 	
 	/**你已经签到成功，请勿连续签到*/
 	public static final int STUDENT_SIGN_MANY_TIMES = 3002;
+	
+	/**查询签到记录的时候出错，sign_id不是数字*/
+	public static final int SIGN_ID_NOT_INTEGER = 4001;
+	
 }

@@ -1,5 +1,7 @@
 package com.suitang.service.impl;
 
+import java.io.Serializable;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +24,11 @@ public class SignHistoryServiceImpl implements SignHistoryService{
 	@Override
 	public void updateSignHistory(SignHistory signHistory) {
 		signHistoryDao.update(signHistory);
+	}
+
+	@Override
+	public SignHistory[] getSignHistorysBySign_id(Serializable sign_id) {
+		return signHistoryDao.getSignHistorysBySign_id(sign_id);
 	}
 
 }

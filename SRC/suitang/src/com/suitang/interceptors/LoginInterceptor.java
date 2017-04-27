@@ -90,16 +90,21 @@ public class LoginInterceptor extends AbstractInterceptor {
 						out.write(jsonObject.toString());
 						out.close();
 						return "schoolLogin";
+					}else{
+						//没过期，放行，放行之前，更新一下数据库状态
+						loginStatus = loginStatusService.getLoginStatusByLoginId(token);
+						loginStatus.setExpiration_time(new Secret().EXPIRATION_TIME);		//在放行之前重新更新过期时间
+						loginStatusService.updateLoginStatus(loginStatus);
 					}
 				}
 			}
 		}
 		
-		LoginStatus loginStatus = loginStatusService.getLoginStatusByLoginId(token);
-		loginStatus.setExpiration_time(new Secret().EXPIRATION_TIME);		//在放行之前重新更新过期时间
-		loginStatusService.updateLoginStatus(loginStatus);
 		
+		response.setHeader("token", token);
 		String rtValue = invocation.invoke();//放行
+		
+		
 		return rtValue;
 	}
 

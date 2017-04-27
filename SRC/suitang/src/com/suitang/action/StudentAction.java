@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import net.sf.ezmorph.array.IntArrayMorpher;
 import net.sf.json.JSONObject;
 
 import org.springframework.context.annotation.Scope;
@@ -24,6 +25,8 @@ import com.suitang.utils.ErrorInfo;
 public class StudentAction extends BaseAction<SignHistory>{
 
 	private SignHistory signHistory = this.getModel();
+	
+//	private StudentSign studentSign = this.getModel();
 	
 	@Resource
 	private LoginStatusService loginStatusService;
@@ -71,15 +74,18 @@ public class StudentAction extends BaseAction<SignHistory>{
 			return ;
 		}
 		
-		signHistory.setUid(signTemp.getUid());					//设置uid
+		int uid = loginStatusService.getLoginStatusByLoginId(request.getHeader("token")).getUid();
+		signHistory.setUid(uid);								//设置uid
+//		signHistory.setUid(signTemp.getUid());					//设置uid
 		signHistory.setSign_id(signTemp.getSign_id());			//设置sign_token唯一id
 		signHistory.setSign_time(System.currentTimeMillis());	//设置签到时间
-		if(signHistory.getSign_late() == 1){
+		if(null == signHistory.getSign_late()){
 			//补签
 		}else{
 			//不是补签
 			signHistory.setLate_reason(null);			//不是补签的话
 		}
+		
 		try{
 			signHistoryService.saveSignHistory(signHistory);
 		}catch(Exception e){
@@ -96,9 +102,14 @@ public class StudentAction extends BaseAction<SignHistory>{
 	@Override
 	public void validate() {
 		//验证sign_token
-		signHistory.getSign_id();
+//		signHistory.getSign_id();
+		
+//		String sign_token = studentSign.getSign_token();
+		
 		String sign_token = request.getParameter("sign_token");
-		if(sign_token != null && sign_token.equals("")){
+		System.out.println("sign_token = "  + sign_token);
+		
+		if(sign_token != null && !sign_token.equals("")){
 			signTemp = signService.findSignBySign_token(sign_token);
 			if(signTemp == null){
 				//数据库不存在该sign_token
@@ -108,6 +119,14 @@ public class StudentAction extends BaseAction<SignHistory>{
 				if(signTemp.getInvalid_time()<new Date().getTime()){
 					//时间已过期
 					error = ErrorInfo.SIGN_TOKEN_EXPIRE;
+				}else{
+					//时间没过期，符合要求，验证是否是自己发起签到，自己签到
+					int sign_uid = signService.findSignBySign_token(sign_token).getUid();
+					int loginStatus_uid = loginStatusService.getLoginStatusByLoginId(request.getHeader("token")).getUid(); 
+					if(sign_uid == loginStatus_uid){
+						//说明是自己发起签到，自己签到
+						error = ErrorInfo.REQUESTSIGN_AND_SIGN;
+					}
 				}
 			}
 		}else{

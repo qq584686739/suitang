@@ -24,13 +24,14 @@
 				外键
 			-->
 			<column name="uid"></column>
+			
 			</key>
 			<!-- 
 				column外键
 			-->
-			<!-- <many-to-many class="com.suitang.domain.Course" 
+			<!-- <many-to-many class="com.suitang.domain.Course"
 				column="cid"></many-to-many> -->
-			<many-to-many class="com.suitang.domain.Course">
+			 <many-to-many class="com.suitang.domain.Course">
 				<column name="cid" ></column>
 				<column name="cd_id" ></column>
 				<column name="c_year" ></column>
@@ -38,8 +39,7 @@
 				<column name="c_week" ></column>
 				<column name="c_lesson" ></column>
 				<column name="c_time" ></column>
-				
-			</many-to-many>
+			</many-to-many> 
 		</set>
 	</class>
 </hibernate-mapping>

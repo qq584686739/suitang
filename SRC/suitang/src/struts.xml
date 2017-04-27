@@ -88,10 +88,16 @@
 			<result name="input">/login.jsp</result>
 		</action>
 		
+		<action name="recordAction" class="com.suitang.action.RecordAction" method="findSign">
 		
-		
+			<interceptor-ref name="mydefault"></interceptor-ref>
+			
+			<result name="schoolLogin">/schoolLogin.jsp</result>
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
 	</package>
-
 </struts>
 	
 	
