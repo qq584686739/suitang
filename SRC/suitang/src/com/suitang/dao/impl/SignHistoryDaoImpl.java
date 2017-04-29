@@ -9,6 +9,7 @@ import javax.persistence.criteria.From;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Test;
 import org.springframework.stereotype.Repository;
 
 import com.suitang.dao.SignHistoryDao;
@@ -28,13 +29,13 @@ public class SignHistoryDaoImpl extends BaseDaoImpl<SignHistory> implements Sign
 		String hql = "FROM SignHistory sh WHERE sh.sign_id = '" + sign_id + "'";
 		Query query = session.createQuery(hql);
 		List<SignHistory> list = query.list();
-		int size = list.size();
-		
-		session.close();
-		
-		SignHistory[] SignHistorys = new SignHistory[size];
-		
 		if(list!=null && list.size()>0){
+			int size = list.size();
+			
+			session.close();
+			
+			SignHistory[] SignHistorys = new SignHistory[size];
+		
 			for(int i=0;i<size;i++){
 				SignHistorys[i] = list.get(i);
 			}
@@ -43,4 +44,26 @@ public class SignHistoryDaoImpl extends BaseDaoImpl<SignHistory> implements Sign
 		return null;
 	}
 
+	@Override
+	public SignHistory[] getSignHistorysByUid(Integer uid) {
+		SessionFactory sessionFactory = 
+				this.getHibernateTemplate().getSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		String hql = "FROM SignHistory sh WHERE sh.uid = '" + uid.intValue() + "'";
+		Query query = session.createQuery(hql);
+		List<SignHistory> list = query.list();
+		if(list!=null && list.size()>0){
+			int size = list.size();
+			session.close();
+		
+			SignHistory[] SignHistorys = new SignHistory[size];
+		
+			for(int i=0;i<size;i++){
+				SignHistorys[i] = list.get(i);
+			}
+			return SignHistorys;
+		}
+		return null;
+	}
 }

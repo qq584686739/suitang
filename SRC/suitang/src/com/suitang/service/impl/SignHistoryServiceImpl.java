@@ -31,4 +31,9 @@ public class SignHistoryServiceImpl implements SignHistoryService{
 		return signHistoryDao.getSignHistorysBySign_id(sign_id);
 	}
 
+	@Override
+	public SignHistory[] getSignHistorysByUid(Integer uid) {
+		return signHistoryDao.getSignHistorysByUid(uid);
+	}
+
 }

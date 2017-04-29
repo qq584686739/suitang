@@ -259,7 +259,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			user = createNewUser();	//新建一个默认的user
 			userService.saveUser(user);
 			
-			UserLocalAuths userLocalAuths = createNewUserLocalAuths(user.getUid());
+			UserLocalAuths userLocalAuths = createNewUserLocalAuths(user.getUid(), user.getRank());
 			userLocalAuthService.saveUserLocalAuthS(userLocalAuths);
 		}else{			
 			//数据库原来存在该用户
@@ -337,12 +337,12 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 
 
 
-	private UserLocalAuths createNewUserLocalAuths(int uid) {
+	private UserLocalAuths createNewUserLocalAuths(int uid, int rank) {
 		UserLocalAuths userLocalAuths = new UserLocalAuths();
 		userLocalAuths.setUid(uid);
 		userLocalAuths.setSchool_no(schoolLogin.getSchool_no());
 		userLocalAuths.setPassword(schoolLogin.getPassword());
-		userLocalAuths.setRand(0);
+		userLocalAuths.setRand(rank);
 		//手机和邮箱默认为空
 		userLocalAuths.setPhone_no("");
 		userLocalAuths.setEmail("");
@@ -374,7 +374,14 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		
 		user.setSex(0);								//设置默认的性别
 		
-		user.setRank(0);							//设置默认职位
+		if(schoolLogin.getSchool_no().length() == 8){
+			//说明是学生
+			user.setRank(0);
+		}else{
+			//说明是老师
+			user.setRank(1);
+		}
+		
 		
 		return user;
 	}

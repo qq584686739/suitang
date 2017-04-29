@@ -33,7 +33,7 @@ public class RecordAction extends ActionSupport implements ServletRequestAware,S
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	
-	/**flag 1:找所有的签到请求，2：找某一条签到请求的所有学生信息*/
+	/**flag 1:找所有的签到请求，2：找某一条签到请求的所有学生信息,3:查找这个学生的所有签到记录*/
 	private int flag = 1;
 	
 	private int sign_id = -1;
@@ -55,24 +55,42 @@ public class RecordAction extends ActionSupport implements ServletRequestAware,S
 	
 	@Resource
 	private SignService signService;
+	
+	private User user;
 
 	public void validate() {
-		String sign_id_String = request.getParameter("sign_id");
 		
-		if(sign_id_String == null){
-			//说明是老师查看所有的签到请求记录
-			flag = 1;
-		}else{
-			//说明老师查看某一条签到记录的所有学生信息
-			flag = 2;
+		//判断是学生还是老师
+		String token = request.getHeader("token");
+		user = loginStatusService.getUserByLoginId(token);
+		if(user.getRank().intValue() == 0){
+			//学生
+			//是学生的话就只查签到记录
+			flag = 3;
+		}else {
+			//老师
 			
-			try {
-				sign_id = Integer.valueOf(sign_id_String);
-			} catch (Exception e) {
-				//查询签到记录的时候出错，sign_id不是数字
-				error = ErrorInfo.SIGN_ID_NOT_INTEGER;
+			String sign_id_String = request.getParameter("sign_id");
+			
+			if(sign_id_String == null){
+				//说明是老师查看所有的签到请求记录
+				flag = 1;
+			}else{
+				//说明老师查看某一条签到记录的所有学生信息
+				flag = 2;
+				//2136895390
+				//15692236836
+				try {
+					sign_id = Integer.valueOf(sign_id_String);
+				} catch (Exception e) {
+					//查询签到记录的时候出错，sign_id不是数字
+					error = ErrorInfo.SIGN_ID_NOT_INTEGER;
+				}
 			}
 		}
+		
+		
+		
 		super.validate();
 	}
 	
@@ -111,12 +129,47 @@ public class RecordAction extends ActionSupport implements ServletRequestAware,S
 		}else if(flag == 2){
 			//说明老师查看某一条签到记录的所有学生信息
 			findSignHistorysBySign_id(sign_id);
+		}else if(flag == 3){
+			//查找这个学生所有的签到记录
+			findStudentSignHistorys();
 		}
 		
 		out.write(jsonObject.toString());
 		out.close();
 	}
 	
+	/**
+	 * 查找这个学生所有的签到记录
+	 * findStudentSignHistorys
+	 * @Description:
+	 * @Author:肖家豪(作者)
+	 * @Version:v1.00(版本号)
+	 * @Create:Date:2017年4月29日 下午2:15:01
+	 * @Return:void
+	 */
+	private void findStudentSignHistorys() {
+		SignHistory[] signHistorys= signHistoryService.getSignHistorysByUid(user.getUid());
+		
+		if(signHistorys == null){
+			//这个学生没有任何签到记录
+			jsonObject.put("status", 1);
+			jsonObject.put("message", "请求成功，这个学生没有任何的签到记录，赶快去扫码签到吧");
+			jsonObject.put("data", "");
+			return ;
+		}
+		
+		Set<Sign> set = new HashSet<Sign>();
+		for(int i = 0 ; i < signHistorys.length ; i++){
+			SignHistory signHistory = signHistorys[i];
+			
+			int sign_id = signHistory.getSign_id();
+			Sign sign = signService.findSignBySign_id(sign_id);
+			set.add(sign);
+		}
+		jsonObject.put("status", 1);
+		jsonObject.put("data", set);
+	}
+
 	private void findAllSignRequest() {
 		//说明是老师查看所有的签到请求记录
 		String token = request.getHeader("token");
