@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>请求失败</title>
+    <title>My JSP 'index.jsp' starting page</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -21,6 +21,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    失败！
+   	<form action="${pageContext.request.contextPath }/zxingAction_qrCode.action" method="GET"> 
+   	
+		<input type="text" name="qr_code_string" /> <br/>
+		<input type="submit" value="登录"/>
+   	</form>
   </body>
 </html>

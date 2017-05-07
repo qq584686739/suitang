@@ -52,4 +52,7 @@ public class ErrorInfo {
 	/**查询签到记录的时候出错，sign_id不是数字*/
 	public static final int SIGN_ID_NOT_INTEGER = 4001;
 	
+	/**查看签到详情是GET请求*/
+	public static final int GET_RECORD = 4002;
+	
 }

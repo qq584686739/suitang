@@ -92,12 +92,12 @@ public class CourseAction extends BaseAction<CourseLogin>{
 			int i = 1;
 			while (iterator.hasNext()) {
 				Course course = (Course) iterator.next();
-				System.out.println(course.toString());
+//				System.out.println(course.toString());
 				jsonObjectTemp.put(i++, course);
 			}
 			
 			jsonObject.put("data", jsonObjectTemp);
-			System.out.println("是否执行成功了");
+//			System.out.println("是否执行成功了");
 			
 		}else if(signin == 2){
 			//在数据库中
@@ -137,7 +137,7 @@ public class CourseAction extends BaseAction<CourseLogin>{
 			out.write(jsonObject.toString());
 			return ;
 		} catch (IOException e) {
-			System.out.println("返回有误！");
+//			System.out.println("返回有误！");
 			e.printStackTrace();
 		}
 	}

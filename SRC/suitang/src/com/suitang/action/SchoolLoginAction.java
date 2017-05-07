@@ -2,24 +2,20 @@ package com.suitang.action;
 
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.enterprise.inject.Default;
 import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.junit.Test;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -45,6 +41,7 @@ import com.suitang.utils.Secret;
 @Scope(value="prototype")//如果交给spring管理，scope = "prototype"
 public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 	/**课表请求URL*/
+	/**教务处学号密码校验url*/
 	private static String requestValidateUrl = "http://218.197.80.13/jwglxt/xtgl/login_cxCheckYh.html";
 	private static String requestUrl = "http://218.197.80.13/jwglxt/xtgl/login_login.html";
 	private static String requestUrl2 = "http://218.197.80.13/jwglxt/kbcx/xskbcx_cxXsKb.html";
@@ -152,7 +149,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 			session.setAttribute(uuidString, "1");	//把秘钥放到session里
 			session.setMaxInactiveInterval(Secret.SESSION_TIME);	//设置session的默认时间
 			
-			System.out.println("uuidString = " + uuidString);
+//			System.out.println("uuidString = " + uuidString);
 			
 			//获得课程
 //			Set<Course> courses = getCourse();
@@ -516,7 +513,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		httpUtils.setRequestMethod("POST");
 		
 		/**设置请求参数*/
-		Map requestProperty = new HashMap();
+		Map<String, String> requestProperty = new HashMap<String, String>();
 		requestProperty.put("yhm", schoolLogin.getSchool_no());
 		requestProperty.put("mm", schoolLogin.getPassword());
 		requestProperty.put("yzm", "");
@@ -537,7 +534,7 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		httpUtils.setRequestUrl(requestUrl2);
 		
 		/**设置cookie,设置响应头*/
-		Map headProperty = new HashMap();
+		Map<String, String> headProperty = new HashMap<String, String>();
 		headProperty.put("Cookie", cookie);
 		httpUtils.setHeadProperty(headProperty);
 		
@@ -557,9 +554,9 @@ public class SchoolLoginAction extends BaseAction<SchoolLogin>{
 		
 		String jsonString = httpResult2.getResponseBodyString("utf-8");
 		
-		System.out.println("---------------------------------课表信息（开始）---------------------------");
-		System.out.println(jsonString);
-		System.out.println("---------------------------------课表信息（结束）---------------------------");
+//		System.out.println("---------------------------------课表信息（开始）---------------------------");
+//		System.out.println(jsonString);
+//		System.out.println("---------------------------------课表信息（结束）---------------------------");
 		
 		JSONObject json = JSONObject.fromObject(jsonString);
 		

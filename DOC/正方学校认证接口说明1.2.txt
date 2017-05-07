@@ -213,7 +213,7 @@
 
 
 -----------------------------------------------------------------------------------------------------------------------------------
-老师查询签到记录：
+查询签到记录：
 	接口:http://139.129.11.18:8090/suitang/recordAction.action
 
 	【备注说明：老师的查询所有签到请求、老师的查询某一次签到请求的所有已签到学生信息、学生查询自己的签到记录    -->   都忘这个接口传】
@@ -278,10 +278,19 @@
 	/**数据库存在该sign_token，但是已经过期无法使用，请刷新后重试*/
 	public static final int SIGN_TOKEN_EXPIRE = 2007;
 	
+	/**一个人同时发起签到和请求签到*/
+	public static final int REQUESTSIGN_AND_SIGN = 2008;
+	
 	/**学生签到没有携带sign_token*/
 	public static final int SIGN_TOKEN_ERROR = 3001;
 	
 	/**你已经签到成功，请勿连续签到*/
 	public static final int STUDENT_SIGN_MANY_TIMES = 3002;
+	
+	/**查询签到记录的时候出错，sign_id不是数字*/
+	public static final int SIGN_ID_NOT_INTEGER = 4001;
+	
+	/**查看签到详情是GET请求*/
+	public static final int GET_RECORD = 4002;
 
 ***************************************************************************************/

@@ -59,15 +59,14 @@
 			<result name="input">/error.jsp</result>
 		</action>
 		
-		
+		<!-- 学号登录 -->
 		<action name="schoolLogin_*" class="com.suitang.action.SchoolLoginAction" method="{1}">
 			<result name="success">/success.jsp</result>
 			<result name="error">/error.jsp</result>
 			<result name="input">/login.jsp</result>
 		</action>
 		
-		
-		
+		<!-- 老师发起签到 -->
 		<action name="signRequest" class="com.suitang.action.SignAction" method="signRequest">
 		
 			<interceptor-ref name="mydefault"></interceptor-ref>
@@ -78,6 +77,7 @@
 			<result name="input">/login.jsp</result>
 		</action>
 		
+		<!-- 学生请求签到 -->
 		<action name="studentAction_*" class="com.suitang.action.StudentAction" method="{1}">
 		
 			<interceptor-ref name="mydefault"></interceptor-ref>
@@ -88,12 +88,21 @@
 			<result name="input">/login.jsp</result>
 		</action>
 		
+		<!-- 查看签到 -->
 		<action name="recordAction" class="com.suitang.action.RecordAction" method="findSign">
 		
 			<interceptor-ref name="mydefault"></interceptor-ref>
 			
 			<result name="schoolLogin">/schoolLogin.jsp</result>
 			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		
+		<!-- 二维码 -->
+		<action name="zxingAction_*" class="com.suitang.action.ZxingAction" method="{1}">
+			<!-- <interceptor-ref name="mydefault"></interceptor-ref> -->
+			<result name="success">/showCode.jsp</result>
 			<result name="error">/error.jsp</result>
 			<result name="input">/login.jsp</result>
 		</action>

@@ -107,7 +107,7 @@ public class StudentAction extends BaseAction<SignHistory>{
 //		String sign_token = studentSign.getSign_token();
 		
 		String sign_token = request.getParameter("sign_token");
-		System.out.println("sign_token = "  + sign_token);
+//		System.out.println("sign_token = "  + sign_token);
 		
 		if(sign_token != null && !sign_token.equals("")){
 			signTemp = signService.findSignBySign_token(sign_token);

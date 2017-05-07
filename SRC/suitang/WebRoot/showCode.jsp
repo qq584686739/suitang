@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>请求失败</title>
+    <title>扫描二维码签到</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -20,7 +20,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
   </head>
   
-  <body>
-    失败！
+  <body align="center" bgcolor="#11BB8C">
+  	<table>
+  		<tr height="150px"/>
+  	</table>
+  	<img src="qrCode/${requestScope.fileName}"/>
   </body>
 </html>

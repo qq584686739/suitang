@@ -36,8 +36,7 @@ public class SignDaoImpl extends BaseDaoImpl<Sign> implements SignDao{
 
 	@Override
 	public Sign findSignBySign_id(Serializable sign_id) {
-		this.getHibernateTemplate().get(Sign.class, sign_id);
-		return null;
+		return this.getHibernateTemplate().get(Sign.class, sign_id);
 	}
 
 	@Override
@@ -48,13 +47,14 @@ public class SignDaoImpl extends BaseDaoImpl<Sign> implements SignDao{
 		String hql = "FROM Sign s WHERE s.uid = '" + uid + "'";
 		Query query = session.createQuery(hql);
 		List<Sign> list = query.list();
-		int size = list.size();
-		
-		Sign[] signs = new Sign[size];
-		
-		session.close();
-		
 		if(list!=null && list.size()>0){
+			
+			int size = list.size();
+			
+			Sign[] signs = new Sign[size];
+			
+			session.close();
+		
 			for(int i = 0 ; i < size ; i++){
 				signs[i] = list.get(i);
 			}
