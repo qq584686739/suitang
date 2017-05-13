@@ -223,10 +223,10 @@ public class RecordAction extends ActionSupport implements ServletRequestAware,S
 			jsonObject.put("data", "");
 			jsonObject.put("message", "该老师还没有发起任何签到请求，赶紧去课堂上发起签到吧！");
 		}else{
-			JSONObject jsonObjectTemp = new JSONObject();
 			Set<JSONObject> set = new HashSet<JSONObject>();
 			for(Sign sign : signs){
 				
+				JSONObject jsonObjectTemp = new JSONObject();
 				String cid = sign.getCid();
 				String cd_id = sign.getCd_id();
 				int c_year = sign.getC_year();
@@ -236,7 +236,8 @@ public class RecordAction extends ActionSupport implements ServletRequestAware,S
 				String c_time = sign.getC_time();
 				Course course = courseService.getCourseByPrimarykeys(cid, cd_id, c_year, c_term, c_week, c_lesson, c_time);
 				
-				jsonObjectTemp.put("sign_id", sign_id);
+//				jsonObjectTemp.put("sign_id", sign_id);
+				jsonObjectTemp.put("sign_id", sign.getSign_id());
 				jsonObjectTemp.put("course", course);
 				jsonObjectTemp.put("sign_time", new SimpleDateFormat("yyyy-MM-dd日 HH:mm:ss").format(new Date(sign.getSign_time())));
 //				jsonObjectTemp.put("sign_late", sign_late);
@@ -283,9 +284,9 @@ public class RecordAction extends ActionSupport implements ServletRequestAware,S
 		for(int i = 0 ; i < signHistorys.length ; i++){
 			SignHistory signHistory = signHistorys[i];
 			int uid = signHistory.getUid();
-			User user = userService.getUserById(uid);
-			user.setCourses(null);
-			set.add(user);
+			User userTemp = userService.getUserById(uid);
+			userTemp.setCourses(null);
+			set.add(userTemp);
 		}
 		jsonObject.put("status", 1);
 		jsonObject.put("data", set);
